@@ -10,7 +10,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.use(requireAuth);
+app.use(requireAuth);
 
 
 // OAuth -> User Pool (Cognito) -> User gets JWT -> Validated by aws-jwt-verify
