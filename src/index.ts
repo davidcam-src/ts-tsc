@@ -12,6 +12,16 @@ app.get('/trees', requireAuth, async (req,res) => {
     res.send(people);
 })
 
+app.get('/version', requireAuth, async (req, res) => {
+  res.send('1.0.0');
+});
+
+
+app.use('/:invalidPath',requireAuth, (req, res) => {
+  res.status(404).send('404 Not Found');
+});
+
+
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => console.log(`App listening on PORT ${port}`))
