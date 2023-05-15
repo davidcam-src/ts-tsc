@@ -1,10 +1,18 @@
 { 
   "compilerOptions": {
+    "types": [
+      // ... your other types
+      "node"
+    ],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true, 
     "target": "es2017",                                  
     "forceConsistentCasingInFileNames": true,           
-    "skipLibCheck": true                 
-  }
+    "skipLibCheck": true , 
+    "rootDir": "./src",      
+    "outDir": "./dist",          
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
