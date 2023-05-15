@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/src/index.ts",
-    "dev": "tsc -w & nodemon dist/src/index.js",
+    "start": "ts-node ./src/index.ts",
+    "dev": "nodemon",
     "test": "test"
   },
   "author": "david campbell",
