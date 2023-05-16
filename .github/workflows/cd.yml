@@ -8,28 +8,25 @@ on:
 env:
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-#       - name: Configure AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-#           aws-region: ${{ env.AWS_REGION }}
       - name: Assume IAM role
         id: assume-iam-role
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: "us-east-1"
-          role-to-assume: "arn:aws:iam::356223155086:role/TS-TSC-EC2-ECR-Access"
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-duration-seconds: 1200
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
           registry: ${{ secrets.ECR_REGISTRY }}
       - name: Build and push Docker image
         id: build-image
