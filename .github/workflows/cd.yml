@@ -14,6 +14,34 @@ env:
   ECR_REPOSITORY: ts-tsc
   AWS_REGION: us-east-1
   ECR_IMAGE_TAG: node-ec2
+  EC2_PUB_IP: ec2-54-198-98-185.compute-1.amazonaws.com
+  SSH_KEY: -----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAgSCufzEohb3oeFbahJeJJr0YCaYfbXJDTI4U25zArsASjP3N
+6A35+cW8o5I5p6TuvphCmxJ+rVm+o8ZPwCdG4XgBRKe02HwtrH3CxTguYt7J6xEK
+dLXXuobgW9f7bkxRMCYPNjr5+TJsa9r2V4bHNqd4AW1NOf4Npki9YHHc/Grm683L
+mzTUs2BpPzpKu7IxCOw8XNjyvj1GGzpg7teXGwCBL/z2GWf7meiCEiUszVFEqYTK
+pKO3bT/XjRl18/6AaAg4w0p5Jy8GF559k9nW3dTyLVRLNo6ThP+4lSMRMyKA9Pbj
+oaX+ZzRo1MWvV07Y1/fdFAHhxdZjB8Y6J6Y8yQIDAQABAoIBAHv/OzGurgAIBnWQ
+ydPrhGurx6p0WNeLku6vvX3KQAlPLkEv9AtzaGmepW/Zmf3PVue1ZLhvATBL7tJs
+O+cEkH8w8t7PwMzmKiHqvh8OvRR6ZiGRwp2ihR98J3RqqeoX5Rq8YX0tEyBmeFD1
++frA1Qo5tPaB1FftC4Rzc09q58+HHymfzOkLLvcaPaPsW4LZalVLXQex13YOvWx6
+M5sSlFQLakQhz1x5Ci8Z7Vd8lNfjSKX6LutElZeOzPQHkdY+Xwi8U9UGrR4IngS5
+ZPG41JgiXvMFvAxkEKCS9MAgcIMqYBlg1dDR0drFO+Co8ag76rHkBKRCMUti0sB3
+imFWngECgYEA4VJ5bq1Ct+HAbG8wjfKUF/TMPrvISUwLhYLqZdOz9dTP4gcKjzNr
+5IaWWLf9DG0zq3q08YRqsSVXgBMrHq2RO2jo46wEGiYMCDgAddcQG9kJkx5VeRcQ
+9Fv/SVEI4XCcVcy+DEh72TMqzHsX0iusuAQRWJ/ET2EVD4i9ssDBFMECgYEAkrVh
+oUs6hACAbB2ZYOOBfHkNho07HfkjquaBa7n8mgj1RmoJJa2KyE9K1nCyY+hPSeVd
+M4C4t83QgqYTsTHqgiTBocexsA2GNrUp88rfKJTcQ77ik+Bye+TGHO3Rq8kBLJw+
+nuvCEUTAeQm7IcLieSg5MpzNKNXdTMub2oxzAgkCgYBM8AZ63jqL40/7NrRTo+Mh
+kvsy6JfpP0gn3J4BCxrF9FbPjSvz3dEXhUVNIfYMCjW8dffXCCoONvv7xY/Rt96B
+dL8hDpmP/DHblJPDqR3dBG0aiR8Sa+fkKI2xETSBFhyrx2+VbiKr9abFj7qAj104
+sFrj8hnsKPAyD7UGln7XgQKBgEwTQk0hdXZ9zBpEPwS+9KZXH2xmUAF678PvQ61Z
+BGPbwVSCJ7wiAZVdiLEqP1cPYA4xoeLTHPYzA6y78fowqCpUZRQ/OSTR3ob/6oFA
+8fdZOd7nXRbRjIwyVYkqyU8LLFC1tMMz/a52uFgLc75OEKJC+WYFaV2DiP4Jlwf9
+TKYBAoGBAKFNNcHU7Ednuw+xVPpTgN6WhXBFDcdvwFJb95XXbnt0ToeBA7Q7QF68
+dCwdGjLmzN5rsn87iuhhxvsBe3vksVpsWTFsLHayaHFjfexWTtEo/N3D9bQbX6VD
+8mh5qmif2jmGW81MYWuhx6IhHOr2pQ868pBoGhqj8rWI2Rx+Z5y7
+-----END RSA PRIVATE KEY-----
 
 jobs:
   deploy:
@@ -41,10 +69,26 @@ jobs:
           docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
-      - name: Update EC2 instance with latest image
+
+     - name: SSH into EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ EC2_PUB_IP }}
+          username: ec2-user
+          key: ${{ env.SSH_KEY }}
+
+      - name: Pull Docker image on EC2 instance
         run: |
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-          docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
-          docker stop $(docker ps -aq) || true
-          docker rm $(docker ps -aq)|| true
-          docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
+          ssh ec2-user@${{ EC2_PUB_IP }} 'docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
+
+      - name: Stop running containers on EC2 instance
+        run: |
+          ssh ec2-user@${{ EC2_PUB_IP }} 'docker stop $(docker ps -aq) || true'
+
+      - name: Remove stopped containers on EC2 instance
+        run: |
+          ssh ec2-user@${{ EC2_PUB_IP }} 'docker rm $(docker ps -aq) || true'
+
+      - name: Run Docker container on EC2 instance
+        run: |
+          ssh ec2-user@${{ EC2_PUB_IP }} 'docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
