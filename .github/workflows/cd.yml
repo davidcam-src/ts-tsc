@@ -13,6 +13,7 @@ env:
   ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
   ECR_REPOSITORY: ts-tsc
   AWS_REGION: us-east-1
+  ECR_IMAGE_TAG: node-ec2
 
 jobs:
   deploy:
