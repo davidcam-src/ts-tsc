@@ -47,7 +47,7 @@ jobs:
       - name: Build and push Docker image
         id: build-image
         run: |
-          docker build --platform linux/arm64/v8 -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
+          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
       - name: get runner ip address
