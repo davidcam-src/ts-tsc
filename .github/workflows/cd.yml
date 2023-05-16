@@ -10,6 +10,10 @@ env:
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+  
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read 
 
 jobs:
   deploy:
