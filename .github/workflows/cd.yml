@@ -15,6 +15,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
       - name: Assume IAM role
         id: assume-iam-role
         uses: aws-actions/configure-aws-credentials@v1
