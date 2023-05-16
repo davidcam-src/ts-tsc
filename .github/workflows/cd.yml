@@ -46,7 +46,7 @@ jobs:
       - name: Create pem file
         run: |
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@$ec2-54-198-98-185.compute-1.amazonaws.com '
+          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-54-198-98-185.compute-1.amazonaws.com '
 
               # Now we have got the access of EC2 and we will start the deploy .
               docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}
