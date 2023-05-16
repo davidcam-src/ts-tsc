@@ -22,6 +22,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Debug environment variables
+      run: | 
+          echo $ECR_IMAGE_TAG
+          echo "${{ env.IMAGE_TAG }}"
+          echo $ECR_REGISTRY
+          echo "${{ env.ECR_REGISTRY }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -31,18 +37,18 @@ jobs:
           aws-region: us-east-1
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Login to ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
-          aws-region:  ${{ env.AWS_REGION }}
-      - name: Build and push Docker image
-        id: build-image
-        run: |
-          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
-          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
+      # - name: Login to ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v1
+      #   with:
+      #     aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region:  ${{ env.AWS_REGION }}
+      # - name: Build and push Docker image
+      #   id: build-image
+      #   run: |
+      #     docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
+      #     docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
       - name: get runner ip address
         id: ip
