@@ -9,8 +9,8 @@ env:
   ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
   ECR_REPOSITORY: ts-tsc
   AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: "ASIAVF4EN7OHB2LPMZHW"
-  AWS_SECRET_ACCESS_KEY: "dDbeUoP6kHVUqlQBIn2yB8/y2XJ/b2yYteXT+bIO"
+  AWS_ACCESS_KEY_ID: "ASIAVF4EN7OHHFI5TPMC"
+  AWS_SECRET_ACCESS_KEY: "Xt0mNMtCxgnvf77AtrIST6xSSW2xh2YQf9z5EFg+"
     
 jobs:
   deploy:
@@ -28,8 +28,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
           aws-region: us-east-1
       - name: Build and push Docker image
         id: build-image
