@@ -1,4 +1,4 @@
-FROM arm64v8/ubuntu
+FROM node:16-alpine3.14
 
 WORKDIR /app
 
