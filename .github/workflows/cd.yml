@@ -22,8 +22,8 @@ jobs:
         id: assume-iam-role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: "us-east-1"
+          role-to-assume: "arn:aws:iam::356223155086:role/TS-TSC-EC2-ECR-Access"
           role-duration-seconds: 1200
       - name: Login to ECR
         id: login-ecr
