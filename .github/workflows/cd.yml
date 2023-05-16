@@ -37,8 +37,6 @@ jobs:
           aws-region:  ${{ env.AWS_REGION }}
       - name: Build and push Docker image
         id: build-image
-        env:
-          ECR_IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
