@@ -48,6 +48,6 @@ jobs:
         run: |
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
-          docker stop $(docker ps -aq) || true
-          docker rm $(docker ps -aq) || true
+          docker stop app_container || true
+          docker rm app_container || true
           docker run -d --name your-container-name -p 4000:4000 $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
