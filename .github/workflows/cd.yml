@@ -6,9 +6,10 @@ on:
       - main
 
 env:
-  ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
-  ECR_REPOSITORY: ts-tsc
-  AWS_REGION: us-east-1
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
   AWS_ACCESS_KEY_ID: "ASIAVF4EN7OHL2S3OPOZ"
   AWS_SECRET_ACCESS_KEY: "1uuYtppYpqYt3DlMHnSKFFuwXSImvEEo8vl0HuzX+"
     
@@ -16,22 +17,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS Credentials
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: "ASIAVF4EN7OHL2S3OPOZ"
+#           aws-secret-access-key: "1uuYtppYpqYt3DlMHnSKFFuwXSImvEEo8vl0HuzX"
+#           aws-session-token: "IQoJb3JpZ2luX2VjEAoaCXVzLWVhc3QtMSJHMEUCIHMdXldrNGza/EVBXAU7nzVNPyJvCzw4UGq041Qn4B3oAiEAkjvKGlRE0T8sDHvdgzC3lw+LvsP4CMaefJpVRBpP8YIqrAMIMxAAGgwzNTYyMjMxNTUwODYiDBrr+gjOKaHNsVHkjSqJAwIphs3UABHlNTfUZbMtCjqbezNsR/Vt1PhTyi1tMarUnsVhFFheGZSALKPLjeY3zKTJ9Pb19ojQnfVkYf3Yissw+ghsG+EMDN83UAd3YMfzD0dSq90oBd2nvwKKqlXeI6TGfVdwJCYxgBnmsCTwvI6KcUaPyhS88zj9nFc5Duv2pr2wpvp6lTVhu0+N3gbAWrCE2aLXD5SXTnlxulhNViBGaGa5DKjLWnOT+qpLPxwX3bxcJe/wh6ouCfNjIxFMTaZFjuTRktjIlA4b7NA0xbnLvpS9Bkxk8TKGQ95WBT4S7hH49NEbb8AaxelKeY+riwIcV2iebnm6qcUA0IHms5cYWpIEk+fb7dQXd58PglQm/FW1fJfZxtuQWdZ1mocxohcEEgYX1PQIcOIrCCojSKbJsio54TXnH4nTNGLqHYKeVoQoBFLk1TP30+gaYD3JxDlGW2f35TPRtLhq1sNHwkUTQBNJR7ULX0CAY188P3nOCe+NTt4dXR/pBfIt+HK8Mur/Wgu4nSLxUjDr+Y6jBjqmATl0fA+nZRCaSiT6XGoPB0xh7v8LyGcGx8J/pI6UGvyxfon5peMI/01q4RpIA3umcxARh/4Xny/Mm+QYDHNx5oB2SM0OCVF88sHJncK83K4FzLIx2sRt/JUthpnNBMs4wKGpay7sjKvPv2TVJhVAj52xWtFhkd1n2cdJdeG6bKcnWKHS8dlze//yWsc8gdwkSFUQyemhn57GGe2BesxTBEEk8Dx5rqE="
+#           aws-region: us-east-1
+      - name: Assume IAM role
+        id: assume-iam-role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: "ASIAVF4EN7OHL2S3OPOZ"
-          aws-secret-access-key: "1uuYtppYpqYt3DlMHnSKFFuwXSImvEEo8vl0HuzX"
-          aws-session-token: "IQoJb3JpZ2luX2VjEAoaCXVzLWVhc3QtMSJHMEUCIHMdXldrNGza/EVBXAU7nzVNPyJvCzw4UGq041Qn4B3oAiEAkjvKGlRE0T8sDHvdgzC3lw+LvsP4CMaefJpVRBpP8YIqrAMIMxAAGgwzNTYyMjMxNTUwODYiDBrr+gjOKaHNsVHkjSqJAwIphs3UABHlNTfUZbMtCjqbezNsR/Vt1PhTyi1tMarUnsVhFFheGZSALKPLjeY3zKTJ9Pb19ojQnfVkYf3Yissw+ghsG+EMDN83UAd3YMfzD0dSq90oBd2nvwKKqlXeI6TGfVdwJCYxgBnmsCTwvI6KcUaPyhS88zj9nFc5Duv2pr2wpvp6lTVhu0+N3gbAWrCE2aLXD5SXTnlxulhNViBGaGa5DKjLWnOT+qpLPxwX3bxcJe/wh6ouCfNjIxFMTaZFjuTRktjIlA4b7NA0xbnLvpS9Bkxk8TKGQ95WBT4S7hH49NEbb8AaxelKeY+riwIcV2iebnm6qcUA0IHms5cYWpIEk+fb7dQXd58PglQm/FW1fJfZxtuQWdZ1mocxohcEEgYX1PQIcOIrCCojSKbJsio54TXnH4nTNGLqHYKeVoQoBFLk1TP30+gaYD3JxDlGW2f35TPRtLhq1sNHwkUTQBNJR7ULX0CAY188P3nOCe+NTt4dXR/pBfIt+HK8Mur/Wgu4nSLxUjDr+Y6jBjqmATl0fA+nZRCaSiT6XGoPB0xh7v8LyGcGx8J/pI6UGvyxfon5peMI/01q4RpIA3umcxARh/4Xny/Mm+QYDHNx5oB2SM0OCVF88sHJncK83K4FzLIx2sRt/JUthpnNBMs4wKGpay7sjKvPv2TVJhVAj52xWtFhkd1n2cdJdeG6bKcnWKHS8dlze//yWsc8gdwkSFUQyemhn57GGe2BesxTBEEk8Dx5rqE="
-          aws-region: us-east-1
-      - name: Checkout code
-        uses: actions/checkout@v2
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-duration-seconds: 1200
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-access-key-id: $AWS_ACCESS_KEY_ID
-          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
+          registry: ${{ secrets.ECR_REGISTRY }}
       - name: Build and push Docker image
         id: build-image
         env:
