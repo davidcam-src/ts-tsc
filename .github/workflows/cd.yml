@@ -66,6 +66,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-54-198-98-185.compute-1.amazonaws.com '
 
               # Now we have got the access of EC2 and we will start the deploy .
+              aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
               docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
               docker stop $(docker ps -aq) || true
               docker rm $(docker ps -aq) || true
