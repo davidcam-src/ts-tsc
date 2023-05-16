@@ -47,7 +47,7 @@ jobs:
       - name: Build and push Docker image
         id: build-image
         run: |
-          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
+          docker build --platform linux/arm64/v8 -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
       - name: get runner ip address
@@ -70,7 +70,7 @@ jobs:
               docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
               docker stop $(docker ps -aq) || true
               docker rm $(docker ps -aq) || true
-              docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} --platform linux/arm64/v8
+              docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} 
               '
       - name: revoke runner ip address
         run: |
