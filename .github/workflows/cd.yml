@@ -44,6 +44,9 @@ jobs:
           docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
+      - name: get runner ip address
+        id: ip
+        uses: haythem/public-ip@v1.2
       - name: whitelist runner ip address
         run: |
           aws ec2 authorize-security-group-ingress \
