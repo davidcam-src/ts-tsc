@@ -21,6 +21,7 @@ jobs:
         with:
           aws-access-key-id: "ASIAVF4EN7OHB2LPMZHW"
           aws-secret-access-key: "dDbeUoP6kHVUqlQBIn2yB8/y2XJ/b2yYteXT+bIO"
+          role-to-assume: arn:aws:iam::356223155086:user/davidcam
           aws-region: us-east-1
       - name: Checkout code
         uses: actions/checkout@v2
