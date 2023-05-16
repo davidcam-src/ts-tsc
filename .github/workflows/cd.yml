@@ -46,19 +46,19 @@ jobs:
       - name: SSH into EC2 instance
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ EC2_PUB_IP }}
+          host: ${{ env.EC2_PUB_IP }}
           username: ec2-user
           key: ${{ env.SSH_KEY }}
 
       - name: Pull Docker image on EC2 instance
         run: |
-          ssh ec2-user@${{ EC2_PUB_IP }} 'docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
+          ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
       - name: Stop running containers on EC2 instance
         run: |
-          ssh ec2-user@${{ EC2_PUB_IP }} 'docker stop $(docker ps -aq) || true'
+          ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker stop $(docker ps -aq) || true'
       - name: Remove stopped containers on EC2 instance
         run: |
-          ssh ec2-user@${{ EC2_PUB_IP }} 'docker rm $(docker ps -aq) || true'
+          ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker rm $(docker ps -aq) || true'
       - name: Run Docker container on EC2 instance
         run: |
-          ssh ec2-user@${{ EC2_PUB_IP }} 'docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
+          ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
