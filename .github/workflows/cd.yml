@@ -10,9 +10,7 @@ env:
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
-  AWS_ACCESS_KEY_ID: "ASIAVF4EN7OHL2S3OPOZ"
-  AWS_SECRET_ACCESS_KEY: "1uuYtppYpqYt3DlMHnSKFFuwXSImvEEo8vl0HuzX+"
-    
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
