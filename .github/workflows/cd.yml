@@ -16,6 +16,7 @@ env:
   ECR_IMAGE_TAG: node-ec2
   EC2_PUB_IP: ec2-54-198-98-185.compute-1.amazonaws.com
   SSH_KEY: ${{ secrets.SSH_KEY }}
+  AWS_INSTANCE_SG_ID: sg-085f4702e51ae6f0d
 
 jobs:
   deploy:
@@ -43,7 +44,14 @@ jobs:
           docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
         shell: bash
-      - name: Create pem file
+      - name: whitelist runner ip address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: New Container on EC2 instance
         run: |
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-54-198-98-185.compute-1.amazonaws.com '
@@ -54,6 +62,13 @@ jobs:
               docker rm $(docker ps -aq) || true
               docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}
               '
+      - name: revoke runner ip address
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
 #       - name: Pull Docker image on EC2 instance
 #         run: |
 #           ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
