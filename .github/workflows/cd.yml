@@ -34,7 +34,7 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-       - name: Build and push Docker image
+      - name: Build and push Docker image
         id: build-image
         env:
           ECR_IMAGE_TAG: ${{ github.sha }}
@@ -42,5 +42,14 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
         shell: bash
+      - name: Update EC2 instance with latest image
+        env:
+          ECR_IMAGE_TAG: ${{ github.sha }}
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
+          docker stop your-container-name || true
+          docker rm your-container-name || true
+          docker run -d --name your-container-name -p 4000:4000 $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
 
 
