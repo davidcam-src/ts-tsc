@@ -22,12 +22,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Debug environment variables
-      run: | 
-          echo $ECR_IMAGE_TAG
-          echo "${{ env.IMAGE_TAG }}"
-          echo $ECR_REGISTRY
-          echo "${{ env.ECR_REGISTRY }}"
+      - name: Debug environment variables
+        run: | 
+            echo $ECR_IMAGE_TAG
+            echo "${{ env.IMAGE_TAG }}"
+            echo $ECR_REGISTRY
+            echo "${{ env.ECR_REGISTRY }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
