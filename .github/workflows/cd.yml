@@ -19,6 +19,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Get USER_IDENTIFIER
+        run: echo ${{ github.token }} | base64 --decode | jq -r .sub
+        id: oidc
       - name: Assume IAM role
         id: assume-iam-role
         uses: aws-actions/configure-aws-credentials@v2
