@@ -1,36 +1,39 @@
 name: CD Pipeline
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_dispatch:
+    inputs:
+      AWS_ACCESS_KEY_ID: 
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_SESSION_TOKEN:
+        required: true
 env:
-  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
-  
-permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read 
+  ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: ts-tsc
+  AWS_REGION: us-east-1
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Assume IAM role
-        id: assume-iam-role
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
+          aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          registry: ${{ secrets.ECR_REGISTRY }}
+          aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
       - name: Build and push Docker image
         id: build-image
         env:
@@ -48,5 +51,3 @@ jobs:
           docker stop your-container-name || true
           docker rm your-container-name || true
           docker run -d --name your-container-name -p 4000:4000 $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
-
-
