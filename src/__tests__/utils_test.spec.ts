@@ -1,10 +1,48 @@
 import { sanitizeProjectResults, getCurrentDate } from '../utils';
 
 describe('sanitizeProjectResults', () => {
+
+  // Choosing to demo tests1 and 6 because they have the most edge cases.
+
+  it('DEMO: should return the expected string for test1', () => {
+    const result = sanitizeProjectResults(
+      '#1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022) - BSMH Retainer May 2022 (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022))'
+    );
+    // A hashtag followed by numbers: #1977
+    // A left parentheses followed by a right one: (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022)
+    // Another right parentheses at the very end of the string: (April to June 2022)) 
+
+    //Two Condition Removal: Last right parenthesis, Hashtag
+    expect(result).toEqual('BSMH - Ongoing 2022 Retainer - BSMH Retainer May 2022');
+  });
+
+
+    it('DEMO: should return the expected string for test6', () => {
+    const result = sanitizeProjectResults(
+      '#1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2) - Fox CPE - MPF Squad Q2 (Project - #1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2))'
+    );
+
+    // A hashtag followed by numbers: #1916
+    // A left parentheses followed by a right one: (2022 Q2) - Fox CPE - MPF Squad Q2 (Project - #1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2)
+    // Another right parentheses at the very end of the string: (2022 Q2)) 
+
+    //Single Condition Removal: Left Parentheses followed by a right one
+    expect(result).toEqual('Fox - CPE FY2022 Q4 - Fox CPE - MPF Squad Q2');
+  });
+
+
+
   it('should return the expected string for test1', () => {
     const result = sanitizeProjectResults(
       '#1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022) - BSMH Retainer May 2022 (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022))'
     );
+    // Choosing to demo this test because it has the most edge cases.
+    // A hashtag followed by numbers: #1977
+    // A left parentheses followed by a right one: (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022)
+    // Another right parentheses at the very end of the string: (April to June 2022)) 
+
+
+    //Two Condition Removal: Last right parenthesis, Hashtag
     expect(result).toEqual('BSMH - Ongoing 2022 Retainer - BSMH Retainer May 2022');
   });
 
@@ -34,6 +72,12 @@ describe('sanitizeProjectResults', () => {
     const result = sanitizeProjectResults(
       '#1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2) - Fox CPE - MPF Squad Q2 (Project - #1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2))'
     );
+
+    // A hashtag followed by numbers: #1916
+    // A left parentheses followed by a right one: (2022 Q2) - Fox CPE - MPF Squad Q2 (Project - #1916 Fox - SOW 59 - CPE FY2022 Q4 (2022 Q2)
+    // Another right parentheses at the very end of the string: (2022 Q2)) 
+
+    //Single Condition Removal: Left Parentheses followed by a right one
     expect(result).toEqual('Fox - CPE FY2022 Q4 - Fox CPE - MPF Squad Q2');
   });
 
