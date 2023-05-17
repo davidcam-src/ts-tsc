@@ -51,6 +51,7 @@ jobs:
           context: .
           push: true
           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
+          platforms: linux/arm/v7
       - name: get runner ip address
         id: ip
         uses: haythem/public-ip@v1.2
