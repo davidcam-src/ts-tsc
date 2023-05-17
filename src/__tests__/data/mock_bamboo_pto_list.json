@@ -1,0 +1,10 @@
+[
+  {
+    "id": 23839,
+    "type": "timeOff",
+    "employeeId": 51,
+    "name": "Tobias Dengel",
+    "start": "2000-01-01",
+    "end": "2100-01-01"
+  }
+]

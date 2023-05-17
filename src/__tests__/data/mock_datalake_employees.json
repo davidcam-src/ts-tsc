@@ -1,0 +1,68 @@
+[
+  {
+    "EmployeeName": "Person, First",
+    "EmployeeEmail": "first.person@willowtreeapps.com",
+    "EmployeeBranch": "Roots",
+    "EmpSupervisor1Name": "Dengel, Tobias",
+    "EmployeeOffice": "Durham",
+    "EmployeeTitle": "IT Support Specialist",
+    "EmployeeDept": "IT",
+    "EmployeeClientName": null,
+    "ProjectName": null
+  },
+  {
+    "EmployeeName": "Person, Second",
+    "EmployeeEmail": "second.person@willowtreeapps.com",
+    "EmployeeBranch": "Sycamore",
+    "EmpSupervisor1Name": "Person, First",
+    "EmployeeOffice": "Columbus",
+    "EmployeeTitle": "Product Designer - Intern",
+    "EmployeeDept": "Intern",
+    "EmployeeClientName": "Mastercard",
+    "ProjectName": "#1846 Mastercard - SmartData Program 2022"
+  },
+  {
+    "EmployeeName": "Person, Second",
+    "EmployeeEmail": "second.person@willowtreeapps.com",
+    "EmployeeBranch": "Sycamore",
+    "EmpSupervisor1Name": "Person, First",
+    "EmployeeOffice": "Columbus",
+    "EmployeeTitle": "Product Designer - Intern",
+    "EmployeeDept": "Intern",
+    "EmployeeClientName": "Mastercard",
+    "ProjectName": "#1846 Mastercard - SmartData Program 2022"
+  },
+  {
+    "EmployeeName": "Person, Second",
+    "EmployeeEmail": "second.person@willowtreeapps.com",
+    "EmployeeBranch": "Sycamore",
+    "EmpSupervisor1Name": "Person, First",
+    "EmployeeOffice": "Columbus",
+    "EmployeeTitle": "Product Designer - Intern",
+    "EmployeeDept": "Intern",
+    "EmployeeClientName": "WillowTree",
+    "ProjectName": "#55 WillowTree - Company Holiday"
+  },
+  {
+    "EmployeeName": "Human, Third",
+    "EmployeeEmail": "third.human@willowtreeapps.com",
+    "EmployeeBranch": "Sycamore",
+    "EmpSupervisor1Name": "Person, Second",
+    "EmployeeOffice": "Columbus",
+    "EmployeeTitle": "Software Test Engineer",
+    "EmployeeDept": "Software Engineering",
+    "EmployeeClientName": null,
+    "ProjectName": null
+  },
+  {
+    "EmployeeName": "Lattice Bot",
+    "EmployeeEmail": "bot@willowtreeapps.com",
+    "EmployeeBranch": "Sycamore",
+    "EmpSupervisor1Name": "Person, Second",
+    "EmployeeOffice": "Columbus",
+    "EmployeeTitle": "Software Test Engineer",
+    "EmployeeDept": "Test / Bots",
+    "EmployeeClientName": null,
+    "ProjectName": null
+  }
+]

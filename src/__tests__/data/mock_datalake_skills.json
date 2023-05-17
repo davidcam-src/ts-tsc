@@ -1,0 +1,44 @@
+[
+  {
+    "EmployeeSkillsEmail": "first.person@willowtreeapps.com",
+    "EmployeeSkillRating": 3,
+    "EmployeeSkillRatingDate": "2022-05-03",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Being First"
+  },
+  {
+    "EmployeeSkillsEmail": "first.person@willowtreeapps.com",
+    "EmployeeSkillRating": 9,
+    "EmployeeSkillRatingDate": "2022-05-03",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Not Being Last"
+  },
+  {
+    "EmployeeSkillsEmail": "tobias.dengel@willowtreeapps.com",
+    "EmployeeSkillRating": 4,
+    "EmployeeSkillRatingDate": "2019-12-20",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Marketing Strategy"
+  },
+  {
+    "EmployeeSkillsEmail": "tobias.dengel@willowtreeapps.com",
+    "EmployeeSkillRating": 6,
+    "EmployeeSkillRatingDate": "2019-12-20",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Branding"
+  },
+  {
+    "EmployeeSkillsEmail": "tobias.dengel@willowtreeapps.com",
+    "EmployeeSkillRating": 6,
+    "EmployeeSkillRatingDate": "2019-12-20",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Design Thinking"
+  },
+  {
+    "EmployeeSkillsEmail": "tobias.dengel@willowtreeapps.com",
+    "EmployeeSkillRating": 6,
+    "EmployeeSkillRatingDate": "2019-12-20",
+    "EmployeeSkillRatingType": "skill-ratings",
+    "EmployeeSkillRatingDesc": "Leadership"
+  }
+]
