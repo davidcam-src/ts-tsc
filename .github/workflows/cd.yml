@@ -73,8 +73,8 @@ jobs:
               docker stop $(docker ps -aq) || true
               docker rm $(docker ps -aq) || true
               echo "heeeeere"
-              docker image inspect "app_container"
               docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} 
+              docker image inspect "app_container"
               '
       - name: revoke runner ip address
         run: |
