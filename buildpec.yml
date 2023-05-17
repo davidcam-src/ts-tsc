@@ -1,15 +1,17 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 14.x
   pre_build:
     commands:
-      - npm install
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --no-include-email --region us-east-1)
+      - docker build -t ts-tsc/node-ec2:latest .
   build:
     commands:
-      - npm run build
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker push ts-tsc/node-ec2:latest
 artifacts:
   files:
     - '**/*'
