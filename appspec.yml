@@ -1,5 +1,10 @@
 version: 0.0
 os: linux
 files:
-  - source: ./*
-    destination: /
+  - source: /
+    destination: /home/ubuntu/
+permissions:
+  - object: /home/ubuntu/
+    owner: root
+    group: root
+    mode: 777
