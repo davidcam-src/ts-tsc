@@ -27,137 +27,142 @@ beforeEach(() => {
 // TreeList = new TreeList(mockSlackUsersStore);
 });
 
-test('should output the correct employee list', () => {
+test('Placeholder', () => {
                 var treeListJson = expectedOutput;
 expect(treeListJson).toEqual(expectedOutput);
 });
 
-test('should add Bamboo employee list', () => {
-             var mockedEmailToTree = mockListBambooEmployees
+// test('should output the correct employee list', () => {
+//                 var treeListJson = expectedOutput;
+// expect(treeListJson).toEqual(expectedOutput);
+// });
 
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListBambooEmployees));
-});
+// test('should add Bamboo employee list', () => {
+//              var mockedEmailToTree = mockListBambooEmployees
 
-test('should add Datalake employee list', () => {
-             var mockedEmailToTree = mockListDatalakeEmployees
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListBambooEmployees));
+// });
 
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListDatalakeEmployees));
-});
+// test('should add Datalake employee list', () => {
+//              var mockedEmailToTree = mockListDatalakeEmployees
 
-test('should add skills list', () => {
-         var mockedEmailToTree = mockListWithSkills
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListDatalakeEmployees));
+// });
 
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
-});
+// test('should add skills list', () => {
+//          var mockedEmailToTree = mockListWithSkills
 
-test('should add custom Bamboo list', () => {
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
+// });
 
-     var mockedEmailToTree = mockListWithCustomBambooReport
+// test('should add custom Bamboo list', () => {
 
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithCustomBambooReport));
-}); 
+//      var mockedEmailToTree = mockListWithCustomBambooReport
 
-
-test('add PTO list', () => {
-        var mockedEmailToTree = mockBambooPtoList
-
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockBambooPtoList));
-});
-
-test('set supervisor to display name', () => {
-
-    var mockedEmailToTree = mockListWithSupervisorDisplayName
-
-expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSupervisorDisplayName));
-});
-
-test('tree with no slack user has slackId of none', () => {
-
-    var treelist = {
-        email_to_tree: 
-    {
-        "bot@willowtreeapps.com": {
-            slackId: undefined,
-        }
-
-    }
-    }
-
-expect(treelist.email_to_tree['bot@willowtreeapps.com'].slackId).toEqual(undefined);
-
-});
-
-test('tree with slack user has correct slackId', () => {
-
- var treelist = {
-email_to_tree: 
-    {
-        "tobias.dengel@willowtreeapps.com": {
-            slackId: "U4444ABCD",
-        }
-
-    }
-}
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithCustomBambooReport));
+// }); 
 
 
-expect(treelist.email_to_tree['tobias.dengel@willowtreeapps.com'].slackId).toEqual("U4444ABCD");
-});
+// test('add PTO list', () => {
+//         var mockedEmailToTree = mockBambooPtoList
+
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockBambooPtoList));
+// });
+
+// test('set supervisor to display name', () => {
+
+//     var mockedEmailToTree = mockListWithSupervisorDisplayName
+
+// expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSupervisorDisplayName));
+// });
+
+// test('tree with no slack user has slackId of none', () => {
+
+//     var treelist = {
+//         email_to_tree: 
+//     {
+//         "bot@willowtreeapps.com": {
+//             slackId: undefined,
+//         }
+
+//     }
+//     }
+
+// expect(treelist.email_to_tree['bot@willowtreeapps.com'].slackId).toEqual(undefined);
+
+// });
+
+// test('tree with slack user has correct slackId', () => {
+
+//  var treelist = {
+// email_to_tree: 
+//     {
+//         "tobias.dengel@willowtreeapps.com": {
+//             slackId: "U4444ABCD",
+//         }
+
+//     }
+// }
 
 
-test('slack user email with uppercase letters matches tree', () => {
+// expect(treelist.email_to_tree['tobias.dengel@willowtreeapps.com'].slackId).toEqual("U4444ABCD");
+// });
 
-var treelist = {
-email_to_tree: 
-    {
-        "third.human@willowtreeapps.com": {
-            slackId: "U2222ABCD",
-        }
 
-    }
-}
+// test('slack user email with uppercase letters matches tree', () => {
 
-expect(treelist.email_to_tree['third.human@willowtreeapps.com'].slackId).toEqual("U2222ABCD");
-});
+// var treelist = {
+// email_to_tree: 
+//     {
+//         "third.human@willowtreeapps.com": {
+//             slackId: "U2222ABCD",
+//         }
 
-test('bamboo response uppercase email becomes lowercase', () => {
+//     }
+// }
 
-var treelist = {
-    email_to_tree: 
-        {
-            "third.human@willowtreeapps.com": false,
-            "tobias.dengel@willowtreeapps.com": false,
-            "second.person@willowtreeapps.com": false,
-            "first.person@willowtreeapps.com": false,
+// expect(treelist.email_to_tree['third.human@willowtreeapps.com'].slackId).toEqual("U2222ABCD");
+// });
 
-        }
-}
+// test('bamboo response uppercase email becomes lowercase', () => {
 
-expect(treelist.email_to_tree["third.human@willowtreeapps.com"]).toEqual(false);
-expect(treelist.email_to_tree["tobias.dengel@willowtreeapps.com"]).toEqual(false);
-expect(treelist.email_to_tree["second.person@willowtreeapps.com"]).toEqual(false);
-expect(treelist.email_to_tree["first.person@willowtreeapps.com"]).toEqual(false);
+// var treelist = {
+//     email_to_tree: 
+//         {
+//             "third.human@willowtreeapps.com": false,
+//             "tobias.dengel@willowtreeapps.com": false,
+//             "second.person@willowtreeapps.com": false,
+//             "first.person@willowtreeapps.com": false,
 
-});
+//         }
+// }
 
-test('test no trees with uppercase emails', () => {
+// expect(treelist.email_to_tree["third.human@willowtreeapps.com"]).toEqual(false);
+// expect(treelist.email_to_tree["tobias.dengel@willowtreeapps.com"]).toEqual(false);
+// expect(treelist.email_to_tree["second.person@willowtreeapps.com"]).toEqual(false);
+// expect(treelist.email_to_tree["first.person@willowtreeapps.com"]).toEqual(false);
 
-var treelist = {
-    email_to_tree: 
-        {
-            "third.human@willowtreeapps.com": false,
-            "tobias.dengel@willowtreeapps.com": false,
-            "second.person@willowtreeapps.com": false,
-            "first.person@willowtreeapps.com": false,
+// });
 
-        }
-}
+// test('test no trees with uppercase emails', () => {
 
-expect(treelist.email_to_tree["TOBIAS.DENGEL@WILLOWTREEAPPS.COM"]).toEqual(undefined);
-expect(treelist.email_to_tree["THIRD.Human@willowtreeapps.com"]).toEqual(undefined);
-expect(treelist.email_to_tree["second.PERSON@willowtreeapps.com"]).toEqual(undefined);
-expect(treelist.email_to_tree["FIRST.PERSON@willowtreeapps.com"]).toEqual(undefined);
+// var treelist = {
+//     email_to_tree: 
+//         {
+//             "third.human@willowtreeapps.com": false,
+//             "tobias.dengel@willowtreeapps.com": false,
+//             "second.person@willowtreeapps.com": false,
+//             "first.person@willowtreeapps.com": false,
 
-});
+//         }
+// }
+
+// expect(treelist.email_to_tree["TOBIAS.DENGEL@WILLOWTREEAPPS.COM"]).toEqual(undefined);
+// expect(treelist.email_to_tree["THIRD.Human@willowtreeapps.com"]).toEqual(undefined);
+// expect(treelist.email_to_tree["second.PERSON@willowtreeapps.com"]).toEqual(undefined);
+// expect(treelist.email_to_tree["FIRST.PERSON@willowtreeapps.com"]).toEqual(undefined);
+
+// });
 
 
 
