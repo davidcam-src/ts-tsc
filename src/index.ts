@@ -19,7 +19,8 @@ app.get('/trees', async (req,res) => {
   people.forEach((person) => {
     console.log(person.name);
 });
-    res.send({"employees": people});
+    res.send({"employees": people,
+              "does_it_bleed": "yes"});
 })
 
 app.get('/version', async (req, res) => {
