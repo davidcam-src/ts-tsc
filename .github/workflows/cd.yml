@@ -49,7 +49,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{ env.SSH_KEY }}
         REMOTE_HOST: ${{ env.EC2_PUB_IP }}
         REMOTE_USER: ec2-user
-        TARGET: /
+        TARGET: /tmp
     - name: revoke runner ip address
       run: |
         aws ec2 revoke-security-group-ingress \
