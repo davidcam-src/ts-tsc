@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login-password --region us-east-1) | docker login --username AWS --password-stdin 356223155086.dkr.ecr.us-east-1.amazonaws.com
+      - docker login --username AWS --password $(aws ecr get-login-password --region us-east-1) | 356223155086.dkr.ecr.us-east-1.amazonaws.com
       - docker build -t ts-tsc/node-ec2:latest .
   build:
     commands:
