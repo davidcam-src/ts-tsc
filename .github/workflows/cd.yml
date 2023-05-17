@@ -24,6 +24,16 @@ jobs:
     steps:
     - name: Checkout the files
       uses: actions/checkout@v2
+    - name: get runner ip address
+      id: ip
+      uses: haythem/public-ip@v1.2
+    - name: whitelist runner ip address
+      run: |
+        aws ec2 authorize-security-group-ingress \
+          --group-id $AWS_INSTANCE_SG_ID \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
     - name: Deploy to Server 1
       uses: easingthemes/ssh-deploy@main
       env:
@@ -31,6 +41,13 @@ jobs:
         REMOTE_HOST: ${{ env.EC2_PUB_IP }}
         REMOTE_USER: ec2-user
         TARGET: /
+    - name: revoke runner ip address
+      run: |
+        aws ec2 revoke-security-group-ingress \
+          --group-id $AWS_INSTANCE_SG_ID \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
 #       - name: Debug environment variables
 #         run: | 
 #             echo $ECR_IMAGE_TAG
