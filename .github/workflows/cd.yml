@@ -10,7 +10,7 @@ on:
       AWS_SESSION_TOKEN:
         required: true
 env:
-  ECR_REGISTRY: "356223155086.dkr.ecr.us-east-1.amazonaws.com"
+  ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
   ECR_REPOSITORY: ts-tsc
   AWS_REGION: us-east-1
   ECR_IMAGE_TAG: node-ec2
@@ -79,7 +79,7 @@ jobs:
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-54-147-251-237.compute-1.amazonaws.com '
               # Now we have got the access of EC2 and we will start the deploy .
-              aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 356223155086.dkr.ecr.us-east-1.amazonaws.com
+              aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
               docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
               docker stop $(docker ps -aq) || true
               docker rm $(docker ps -aq) || true
