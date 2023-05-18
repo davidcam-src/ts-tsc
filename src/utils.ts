@@ -19,11 +19,11 @@ export function sanitizeProjectResults(txt: string): string {
   //Summary: Searches a given string for patterns and replaces them with an empty string
   // Removes:
   // SOW information
-  // hashtags with numbers
-  // strings between left and right parenthesis, including the parenthese themselves
-  // any right parenthesis
+  // hashtags with numbers following
+  // strings between left and right parenthesis, including the parenthesis themselves
+  // any trailing, leftover right parenthesis
 
-  const sanitizedTxt: string = txt.replace(/#\w+ | SOW (.*?)-| \((.*?)\)|\)/g, '');
+  // const sanitizedTxt: string = txt.replace(/#\w+ | SOW (.*?)-| \((.*?)\)|\)/g, '');
 
 
   // DEMO: Mis-sanitized text
@@ -31,7 +31,11 @@ export function sanitizeProjectResults(txt: string): string {
   // Only Removes:
   // SOW information
   // strings between left and right parenthesis
-  // const sanitizedTxt: string = txt.replace(/SOW (.*?)-| \((.*?)\)|/g, '');
+
+  //Will still include:
+  // hashtags with numbers following
+  // any trailing, leftover right parenthesis
+  const sanitizedTxt: string = txt.replace(/SOW (.*?)-| \((.*?)\)|/g, '');
 
 
   return sanitizedTxt.trim();
@@ -51,7 +55,7 @@ export function getCurrentDate(): string {
   const day = String(now.getUTCDate()).padStart(2, '0');
   
 
-  return `${year}-${month}-${day}`;
+  // return `${year}-${month}-${day}`;
   // DEMO: Will cause the format to be MM-DD-YYYY so it won't match our regex pattern in the test.
-  // return `${month}-${day}-${year}`;
+  return `${month}-${day}-${year}`;
 }
