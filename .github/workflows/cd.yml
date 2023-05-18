@@ -10,13 +10,13 @@ on:
       AWS_SESSION_TOKEN:
         required: true
 env:
-  ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
-  ECR_REPOSITORY: ts-tsc
-  AWS_REGION: us-east-1
-  ECR_IMAGE_TAG: node-ec2
-  EC2_PUB_IP: ec2-54-198-98-185.compute-1.amazonaws.com
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_IMAGE_TAG: ${{ secrets.ECR_IMAGE_TAG }}
+  EC2_PUB_IP: ${{ secrets.EC2_PUB_IP }}
   SSH_KEY: ${{ secrets.SSH_KEY }}
-  AWS_INSTANCE_SG_ID: sg-085f4702e51ae6f0d
+  AWS_INSTANCE_SG_ID: ${{ secrets.AWS_INSTANCE_SG_ID }}
 
 jobs:
   deploy:
@@ -28,6 +28,7 @@ jobs:
             echo "${{ env.IMAGE_TAG }}"
             echo $ECR_REGISTRY
             echo "${{ env.ECR_REGISTRY }}"
+            
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,8 +36,10 @@ jobs:
           aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
+          
       - name: Checkout code
         uses: actions/checkout@v2
+        
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -44,22 +47,27 @@ jobs:
           aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
           aws-region:  ${{ env.AWS_REGION }}
+
       - name: Build and push Docker image
         id: build-image
         run: |
           docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG  }} .
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG  }}
 
-      - name: get runner ip address
+      - name: Get Actions Runner IP Address
         id: ip
         uses: haythem/public-ip@v1.2
-      - name: whitelist runner ip address
+        
+      - name: Whitelist Actions Runner IP Address
         run: |
           aws ec2 authorize-security-group-ingress \
-            --group-id $AWS_INSTANCE_SG_ID \
+            --group-id $
+            
+            \
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
       - name: New Container on EC2 instance
         run: |
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
@@ -73,22 +81,11 @@ jobs:
               docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }} 
               docker ps
               '
-      - name: revoke runner ip address
+              
+      - name: Revoke Actions Runner IP Address
         run: |
           aws ec2 revoke-security-group-ingress \
             --group-id $AWS_INSTANCE_SG_ID \
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
-#       - name: Pull Docker image on EC2 instance
-#         run: |
-#           ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
-#       - name: Stop running containers on EC2 instance
-#         run: |
-#           ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker stop $(docker ps -aq) || true'
-#       - name: Remove stopped containers on EC2 instance
-#         run: |
-#           ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker rm $(docker ps -aq) || true'
-#       - name: Run Docker container on EC2 instance
-#         run: |
-#           ssh ec2-user@${{ env.EC2_PUB_IP }} 'docker run -d --name "app_container" -p 4000:4000 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:{{ env.ECR_IMAGE_TAG }}'
