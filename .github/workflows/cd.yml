@@ -38,13 +38,13 @@ jobs:
 #       - name: Run tests
 #         run: npm run test 
             
-#       - name: Configure AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
-#           aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
-#           aws-region: us-east-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
         
 #       - name: Login to ECR
 #         id: login-ecr
