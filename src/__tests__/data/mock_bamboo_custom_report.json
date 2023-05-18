@@ -1,0 +1,56 @@
+{
+  "employees": [
+    {
+      "id": "51",
+      "workEmail": "tobias.dengel@willowtreeapps.com",
+      "state": "Virginia",
+      "city": "Charlottesville",
+      "supervisorEId": null,
+      "supervisorEmail": null,
+      "hireDate": "2010-05-01",
+      "customNamePronunciation(PhoneticSpelling)": null,
+      "customPronoun": "He/Him",
+      "customNewHireMentor": "Jon Smoth",
+      "customLongTermMentor": "Jan Dine"
+    },
+    {
+      "id": "1",
+      "workEmail": "first.person@willowtreeapps.com",
+      "state": "North Carolina",
+      "city": "Raleigh",
+      "supervisorEId": "51",
+      "supervisorEmail": "tobias.dengel@willowtreeapps.com",
+      "hireDate": "2015-06-16",
+      "customNamePronunciation(PhoneticSpelling)": "Per-son",
+      "customPronoun": "He/Him",
+      "customNewHireMentor": "Jon Smoth",
+      "customLongTermMentor": null
+    },
+    {
+      "id": "2",
+      "workEmail": "second.person@willowtreeapps.com",
+      "state": "Ohio",
+      "city": "Columbus",
+      "supervisorEId": "1",
+      "supervisorEmail": "first.person@willowtreeapps.com",
+      "hireDate": "2017-02-10",
+      "customNamePronunciation(PhoneticSpelling)": null,
+      "customPronoun": "He/Him",
+      "customNewHireMentor": null,
+      "customLongTermMentor": "Jan Dine"
+    },
+    {
+      "id": "3",
+      "workEmail": "third.human@willowtreeapps.com",
+      "state": "North Carolina",
+      "city": "Durham",
+      "supervisorEId": "2",
+      "supervisorEmail": "second.person@willowtreeapps.com",
+      "hireDate": "2017-03-22",
+      "customNamePronunciation(PhoneticSpelling)": null,
+      "customPronoun": "She/Her",
+      "customNewHireMentor": null,
+      "customLongTermMentor": "Jan Dine"
+    }
+  ]
+}
