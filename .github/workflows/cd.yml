@@ -10,13 +10,13 @@ on:
       AWS_SESSION_TOKEN:
         required: true
 env:
-  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  ECR_IMAGE_TAG: ${{ secrets.ECR_IMAGE_TAG }}
-  EC2_PUB_IP: ${{ secrets.EC2_PUB_IP }}
+  ECR_REGISTRY: 356223155086.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: ts-tsc
+  AWS_REGION: us-east-1
+  ECR_IMAGE_TAG: node-ec2
+  EC2_PUB_IP: ec2-54-198-98-185.compute-1.amazonaws.com
   SSH_KEY: ${{ secrets.SSH_KEY }}
-  AWS_INSTANCE_SG_ID: ${{ secrets.AWS_INSTANCE_SG_ID }}
+  AWS_INSTANCE_SG_ID: sg-085f4702e51ae6f0d
 
 jobs:
   deploy:
