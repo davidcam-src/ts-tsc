@@ -16,9 +16,6 @@ app.use(requireAuth);
 // OAuth -> User Pool (Cognito) -> User gets JWT -> Validated by aws-jwt-verify
 //Using the requireAuth middleware, we can protect our routes from unauthorized access.
 app.get('/trees', async (req,res) => {
-  people.forEach((person) => {
-    console.log(person.name);
-});
     res.send({"employees": people});
 })
 
