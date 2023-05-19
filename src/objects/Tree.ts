@@ -2,28 +2,35 @@ import * as data from './data.json';
 
 export const people: Tree[] = data.employees;
 
-export interface Tree {
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string;
-  preferredName?: string | null;
-  displayName: string;
-  jobTitle: string;
-  department: string;
-  location: string;
-  branch: string;
-  supervisorId: string;
-  supervisor: string;
-  photoUrl: string;
-  allocations: Allocation[];
-  skills: string[];
-  employeeStatus: string;
-  pronouns: string | null;
-  pronunciation: string | null;
+export class Tree {
+  public id: string;
+  public name: string;
+  public firstName: string;
+  public lastName: string;
+  public preferredName?: string | null;
+  public displayName: string;
+  public jobTitle: string;
+  public department: string;
+  public location: string;
+  public branch: string;
+  public supervisorId: string;
+  public supervisor: any;
+  public photoUrl: string;
+  public allocations: any;
+  public skills: string[];
+  public employeeStatus: string;
+  public pronouns: string | null;
+  public pronunciation: string | null;
+  public hireDate: string | null;
+  public supervisorEmail: string | null;
+  public state: string | null;
+  public city: string | null;
+  public email: string | null;
+  public PTOStart: any;
+  public PTOEnd: any;
 }
 
-export interface Allocation {
-  client: string;
-  project: string;
-}
+// export interface Allocation {
+//   client: string;
+//   project: string;
+// }

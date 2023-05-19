@@ -100,7 +100,7 @@ describe('TreeList', () => {
   // });
 
   test('should add custom Bamboo list', () => {
-    let treelist = TreeList();
+    // let treelist = TreeList();
 
     var mockedEmailToTree = mockListWithCustomBambooReport;
 
