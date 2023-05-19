@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { Axios, AxiosResponse } from 'axios';
+import { getCurrentDate } from './utils.service';
 
 export class BambooService {
   private apiKey: string;
@@ -33,6 +34,26 @@ export class BambooService {
     return customReportList;
   }
 
-  public async getBambooWhosOutList() {}
-  public async getBambooDirectory() {}
+  public async getBambooWhosOutList() {
+    const currentDate = getCurrentDate();
+    const response = await axios.get(
+      `https://${this.apiKey}:@api.bamboohr.com/api/gateway.php/willowtree/v1/time_off/whos_out/?end=${currentDate}`,
+      {
+        headers: { Accept: 'application/json' },
+      },
+    );
+    const whosOutList: any[] = response.data.employees;
+    return whosOutList;
+  }
+
+  public async getBambooDirectory() {
+    const response = await axios.get(
+      `https://${this.apiKey}:@api.bamboohr.com/api/gateway.php/willowtree/v1/employees/directory?`,
+      {
+        headers: { Accept: 'application/json' },
+      },
+    );
+    const employeesList: any[] = response.data['employees'];
+    return employeesList;
+  }
 }
