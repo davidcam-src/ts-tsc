@@ -15,7 +15,6 @@ export function sanitizeProjectResults(txt: string): string {
   // \((.*?)\): Matches a left parenthesis followed by any character, zero or more times, followed by a right parenthesis ex: (.....)
   // \): Matches a right parenthesis ex: ), used to remove the last right parenthesis
 
-
   //Summary: Searches a given string for patterns and replaces them with an empty string
   // Removes:
   // SOW information
@@ -23,8 +22,10 @@ export function sanitizeProjectResults(txt: string): string {
   // strings between left and right parenthesis, including the parenthesis themselves
   // any trailing, leftover right parenthesis
 
-  const sanitizedTxt: string = txt.replace(/#\w+ | SOW (.*?)-| \((.*?)\)|\)/g, '');
-
+  const sanitizedTxt: string = txt.replace(
+    /#\w+ | SOW (.*?)-| \((.*?)\)|\)/g,
+    '',
+  );
 
   // DEMO: Mis-sanitized text
 
@@ -37,11 +38,10 @@ export function sanitizeProjectResults(txt: string): string {
   // any trailing, leftover right parenthesis
   // const sanitizedTxt: string = txt.replace(/SOW (.*?)-| \((.*?)\)|/g, '');
 
-
   return sanitizedTxt.trim();
 }
 
-//Summary: 
+//Summary:
 // Returns the current date in the format YYYY-MM-DD
 export function getCurrentDate(): string {
   const now = new Date();
@@ -49,11 +49,10 @@ export function getCurrentDate(): string {
   // Pad Start For Both Month And Day
   // A conversion to string is made to use the padStart() method.
   // padStart() pads the current string with '0' until the resulting string reaches the given length.
-  
+
   // getUTCMonth() returns a 0 based value for the month of the Date object we previously created
   const month = String(now.getUTCMonth() + 1).padStart(2, '0');
   const day = String(now.getUTCDate()).padStart(2, '0');
-  
 
   return `${year}-${month}-${day}`;
   // DEMO: Will cause the format to be MM-DD-YYYY so it won't match our regex pattern in the test.
