@@ -1,4 +1,7 @@
-import { sanitizeProjectResults, getCurrentDate } from '../utils';
+import {
+  sanitizeProjectResults,
+  getCurrentDate,
+} from '../services/utils.service';
 
 describe('sanitizeProjectResults', () => {
   // Choosing to demo tests1 and 6 because they have the most edge cases.
