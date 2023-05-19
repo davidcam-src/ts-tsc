@@ -1,6 +1,6 @@
 import express from 'express';
 import requireAuth from './middleware/authMiddleware';
-import { people } from './test_data/Tree';
+import { people } from './objects/Tree';
 import cors from 'cors';
 import { BambooService } from './services/bamboo.service';
 import { getBambooApiKey } from './services/ssm.service';

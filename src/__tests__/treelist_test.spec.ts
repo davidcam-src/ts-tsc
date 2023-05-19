@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { TreeList } from '../objects/tree_list';
+import { TreeList } from '../objects/TreeList';
 import { mockSlackUsersStore } from './data/mock_slack_users_store';
 
 // Load all of the data files into memory
@@ -99,12 +99,15 @@ describe('TreeList', () => {
   // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
   // });
 
-  // test('should add custom Bamboo list', () => {
+  test('should add custom Bamboo list', () => {
+    let treelist = TreeList();
 
-  //      var mockedEmailToTree = mockListWithCustomBambooReport
+    var mockedEmailToTree = mockListWithCustomBambooReport;
 
-  // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithCustomBambooReport));
-  // });
+    expect(JSON.stringify(mockedEmailToTree)).toEqual(
+      JSON.stringify(mockListWithCustomBambooReport),
+    );
+  });
 
   // test('add PTO list', () => {
   //         var mockedEmailToTree = mockBambooPtoList
