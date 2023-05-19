@@ -34,14 +34,14 @@ describe('sanitizeProjectResults', () => {
 
 
 
-  // it('should return the expected string for test1', () => {
-  //   const result = sanitizeProjectResults(
-  //     '#1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022) - BSMH Retainer May 2022 (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022))'
-  //   );
-  //   // Choosing to demo this test because it has the most edge cases.
-  //   // A hashtag followed by numbers: #1977
-  //   // A left parentheses followed by a right one: (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022)
-  //   // Another right parentheses at the very end of the string: (April to June 2022)) 
+  it('should return the expected string for test1', () => {
+    const result = sanitizeProjectResults(
+      '#1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022) - BSMH Retainer May 2022 (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022))'
+    );
+    // Choosing to demo this test because it has the most edge cases.
+    // A hashtag followed by numbers: #1977
+    // A left parentheses followed by a right one: (Project - #1977 BSMH - SOW 16 - Ongoing 2022 Retainer (April to June 2022)
+    // Another right parentheses at the very end of the string: (April to June 2022)) 
 
 
   //   //Two Condition Removal: Last right parenthesis, Hashtag
