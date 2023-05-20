@@ -39,19 +39,17 @@ export class BambooService {
 
   public addBambooCustomReport(
     employeesFromCustomReport: object[],
-    existingEmailToTreeList: object,
+    existingEmailToTreeList: any,
   ) {
-    const emailToTreeMap = existingEmailToTreeList as Map<string, Object>;
-
     employeesFromCustomReport.forEach((employee) => {
       const workEmail = employee['workEmail'];
       if (workEmail) {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
 
-        if (emailToTreeMap.has(workEmailAsLowerCase)) {
+        if (existingEmailToTreeList['workEmailAsLowerCase']) {
           console.log('Multiple trees in bamboo with the same email.');
 
-          let existingTree = emailToTreeMap.get(workEmailAsLowerCase);
+          let existingTree = existingEmailToTreeList.get(workEmailAsLowerCase);
 
           existingTree['supervisorId'] = employee['supervisorEId'];
           existingTree['supervisorEmail'] = employee['supervisorEmail'];
@@ -71,7 +69,7 @@ export class BambooService {
       }
     });
 
-    return emailToTreeMap;
+    return existingEmailToTreeList;
   }
 
   public async getBambooWhosOutList(): Promise<object> {
@@ -102,8 +100,6 @@ export class BambooService {
   ): Map<string, Object> {
     const emailToTreeMap = new Map<string, Object>();
 
-    // console.log(typeof employeesFromBambooDirectory);
-
     employeesFromBambooDirectory.forEach((employee) => {
       const workEmail = employee['workEmail'];
       if (workEmail) {
@@ -112,26 +108,12 @@ export class BambooService {
         if (emailToTreeMap.has(workEmailAsLowerCase)) {
           console.log('Multiple trees in bamboo with the same email.');
         }
-        // console.log({
-        //   workEmailAsLowerCase: workEmailAsLowerCase,
-        //   treeObject: this.bambooObjectToTree(employee, workEmailAsLowerCase),
-        // });
         emailToTreeMap.set(
           workEmailAsLowerCase,
           this.bambooObjectToTree(employee, workEmailAsLowerCase) as Object,
         );
-        // console.log('HERE:', {
-        //   workEmailAsLowerCase: workEmailAsLowerCase,
-        //   tree: this.bambooObjectToTree(employee, workEmailAsLowerCase),
-        // });
       }
     });
-
-    //Drafting: add emailToTreeMap to the TreeList Object
-    // console.log(
-    //   'Email To Tree Logging HERE:',
-    //   JSON.stringify(emailToTreeMap, null, 2),
-    // );
     return emailToTreeMap;
   }
 
@@ -202,11 +184,6 @@ export class BambooService {
       longTermMentor: employee['longTermMentor'] || null,
       slackId: employee['slackId'] || null,
     };
-
-    // tree.skills = employee['skills'];
-    // tree.employeeStatus = employee['employeeStatus'];
-    // tree.pronunciation = employee['pronunciation'];
-
     return retVal;
   }
 }

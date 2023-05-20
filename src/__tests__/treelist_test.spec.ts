@@ -77,7 +77,8 @@ describe('TreeList', () => {
   // });
 
   test('should add Bamboo employee list', async () => {
-    let treeList = new TreeList(undefined, undefined);
+    // let treeList = new TreeList(undefined, undefined);
+    let treeList = new TreeList();
     let bambooService = new BambooService('123');
     jest
       .spyOn(bambooService, 'getBambooDirectory')
@@ -105,7 +106,7 @@ describe('TreeList', () => {
   // });
 
   test('should add custom Bamboo list', async () => {
-    let treeList = new TreeList(undefined, undefined);
+    let treeList = new TreeList();
     let bambooService = new BambooService('123');
     jest
       .spyOn(axios, 'post')
