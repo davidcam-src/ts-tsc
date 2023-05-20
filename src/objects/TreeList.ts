@@ -12,13 +12,13 @@ export class TreeList {
 
   public async addBambooEmployeeList(bambooService: BambooService) {
     const bambooDirectory = await bambooService.getBambooDirectory();
-    console.log({ MOCKEDDIR: bambooDirectory });
-    console.log(
-      bambooService.generateEmailToTreeMap(bambooDirectory as object[]),
-    );
+    // console.log({ MOCKEDDIR: bambooDirectory });
+    // console.log(
+    //   bambooService.generateEmailToTreeMap(bambooDirectory as object[]),
+    // );
     this.emailToTreeMap = Object.fromEntries(
       bambooService.generateEmailToTreeMap(bambooDirectory as object[]),
     );
-    console.log({ EMAILTOTREEMAP: this.emailToTreeMap });
+    // console.log({ EMAILTOTREEMAP: this.emailToTreeMap });
   }
 }

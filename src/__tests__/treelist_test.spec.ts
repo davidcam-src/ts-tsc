@@ -4,6 +4,7 @@ import { TreeList } from '../objects/TreeList';
 import { mockSlackUsersStore } from './data/mock_slack_users_store';
 import { BambooService } from '../services/bamboo.service';
 import { mock } from 'node:test';
+import axios from 'axios';
 
 // Load all of the data files into memory
 const dataPath = path.join(__dirname, 'data');
@@ -85,8 +86,8 @@ describe('TreeList', () => {
     await treeList.addBambooEmployeeList(bambooService);
     // console.log('WWWWW', JSON.stringify(mockListBambooEmployees));
 
-    console.log(typeof treeList.emailToTreeMap);
-    console.log(typeof mockListBambooEmployees);
+    // console.log(typeof treeList.emailToTreeMap);
+    // console.log(typeof mockListBambooEmployees);
 
     expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
   });
@@ -104,7 +105,13 @@ describe('TreeList', () => {
   // });
 
   // test('should add custom Bamboo list', () => {
-  //   // let treelist = TreeList();
+  //   let treeList = new TreeList(undefined, undefined);
+  //   let bambooService = new BambooService('123');
+  //       jest
+  //     .spyOn(axios, 'post')
+  //     .mockReturnValueOnce(mockBambooDirectory['employees']);
+
+  //   await treeList.(bambooService);
 
   //   var mockedEmailToTree = mockListWithCustomBambooReport;
 
