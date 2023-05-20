@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { TreeList } from '../objects/TreeList';
 import { mockSlackUsersStore } from './data/mock_slack_users_store';
+import { BambooService } from '../services/bamboo.service';
+import { mock } from 'node:test';
 
 // Load all of the data files into memory
 const dataPath = path.join(__dirname, 'data');
@@ -65,27 +67,29 @@ const mockListWithSupervisorDisplayName = JSON.parse(
 );
 
 describe('TreeList', () => {
-  let TreeList: TreeList;
-
-  beforeEach(() => {
-    // TreeList = new TreeList(mockSlackUsersStore);
-  });
-
-  test('Placeholder', () => {
-    var treeListJson = expectedOutput;
-    expect(treeListJson).toEqual(expectedOutput);
-  });
+  // beforeEach(() => {
+  // });
 
   // test('should output the correct employee list', () => {
   //                 var treeListJson = expectedOutput;
   // expect(treeListJson).toEqual(expectedOutput);
   // });
 
-  // test('should add Bamboo employee list', () => {
-  //              var mockedEmailToTree = mockListBambooEmployees
+  test('should add Bamboo employee list', async () => {
+    let treeList = new TreeList(undefined, undefined);
+    let bambooService = new BambooService('123');
+    jest
+      .spyOn(bambooService, 'getBambooDirectory')
+      .mockReturnValueOnce(mockBambooDirectory['employees']);
 
-  // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListBambooEmployees));
-  // });
+    await treeList.addBambooEmployeeList(bambooService);
+    // console.log('WWWWW', JSON.stringify(mockListBambooEmployees));
+
+    console.log(typeof treeList.emailToTreeMap);
+    console.log(typeof mockListBambooEmployees);
+
+    expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
+  });
 
   // test('should add Datalake employee list', () => {
   //              var mockedEmailToTree = mockListDatalakeEmployees
@@ -99,15 +103,15 @@ describe('TreeList', () => {
   // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
   // });
 
-  test('should add custom Bamboo list', () => {
-    // let treelist = TreeList();
+  // test('should add custom Bamboo list', () => {
+  //   // let treelist = TreeList();
 
-    var mockedEmailToTree = mockListWithCustomBambooReport;
+  //   var mockedEmailToTree = mockListWithCustomBambooReport;
 
-    expect(JSON.stringify(mockedEmailToTree)).toEqual(
-      JSON.stringify(mockListWithCustomBambooReport),
-    );
-  });
+  //   expect(JSON.stringify(mockedEmailToTree)).toEqual(
+  //     JSON.stringify(mockListWithCustomBambooReport),
+  //   );
+  // });
 
   // test('add PTO list', () => {
   //         var mockedEmailToTree = mockBambooPtoList

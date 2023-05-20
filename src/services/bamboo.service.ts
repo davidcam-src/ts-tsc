@@ -56,6 +56,46 @@ export class BambooService {
     );
     const employeesList: any[] = response.data['employees'];
     return employeesList;
+    // return [
+    //   {
+    //     id: '51',
+    //     displayName: 'Tobias Dengel',
+    //     firstName: 'Tobias',
+    //     lastName: 'Dengel',
+    //     preferredName: null,
+    //     jobTitle: 'Chief Executive Officer',
+    //     workPhone: null,
+    //     mobilePhone: '1235559999',
+    //     workEmail: 'tobias.dengel@willowtreeapps.com',
+    //     department: 'Executive',
+    //     location: 'Charlottesville',
+    //     pronouns: null,
+    //     workPhoneExtension: null,
+    //     supervisor: '',
+    //     photoUploaded: true,
+    //     photoUrl: 'https://randomuser.me/api/portraits/lego/5.jpg',
+    //     canUploadPhoto: 0,
+    //   },
+    //   {
+    //     id: '1',
+    //     displayName: 'First Person',
+    //     firstName: 'First',
+    //     lastName: 'Person',
+    //     preferredName: null,
+    //     jobTitle: 'IT Support Specialist',
+    //     workPhone: null,
+    //     mobilePhone: '123555111',
+    //     workEmail: 'first.person@willowtreeapps.com',
+    //     department: 'IT',
+    //     location: 'Durham',
+    //     pronouns: null,
+    //     workPhoneExtension: null,
+    //     supervisor: 'Tobias Dengel',
+    //     photoUploaded: true,
+    //     photoUrl: 'https://randomuser.me/api/portraits/lego/1.jpg',
+    //     canUploadPhoto: 0,
+    //   },
+    // ];
   }
 
   //   public addBambooEmployeeListDraft(
@@ -66,8 +106,10 @@ export class BambooService {
 
   public generateEmailToTreeMap(
     employeesFromBambooDirectory: object[],
-  ): Map<string, object> {
-    const emailToTreeMap = new Map<string, object>();
+  ): Map<string, Object> {
+    const emailToTreeMap = new Map<string, Object>();
+
+    console.log(typeof employeesFromBambooDirectory);
 
     employeesFromBambooDirectory.forEach((employee) => {
       const workEmail = employee['workEmail'];
@@ -82,27 +124,30 @@ export class BambooService {
         // });
         emailToTreeMap.set(
           workEmailAsLowerCase,
-          this.bambooObjectToTree(employee, workEmailAsLowerCase),
+          this.bambooObjectToTree(employee, workEmailAsLowerCase) as Object,
         );
-        // console.log(emailToTreeMap);
+        console.log('HERE:', {
+          workEmailAsLowerCase: workEmailAsLowerCase,
+          tree: this.bambooObjectToTree(employee, workEmailAsLowerCase),
+        });
       }
     });
 
     //Drafting: add emailToTreeMap to the TreeList Object
-    console.log(
-      'Email To Tree Logging HERE:',
-      JSON.stringify(emailToTreeMap, null, 2),
-    );
+    // console.log(
+    //   'Email To Tree Logging HERE:',
+    //   JSON.stringify(emailToTreeMap, null, 2),
+    // );
     return emailToTreeMap;
   }
 
   public bambooObjectToTree(
     employee: object,
     workEmailAsLowerCase: string,
-  ): Tree {
+  ): Object {
     const tree = new Tree();
 
-    tree.email = workEmailAsLowerCase;
+    tree.id = employee['id'];
     tree.name = employee['displayName'];
     tree.firstName = employee['firstName'];
     tree.lastName = employee['lastName'];
@@ -110,14 +155,22 @@ export class BambooService {
     tree.displayName = employee['displayName'];
     tree.department = employee['department'] || null;
     tree.jobTitle = employee['jobTitle'] || null;
-    tree.location = employee['location'] || null;
+    tree.location = employee['location'] || 'NA';
     tree.pronouns = employee['pronouns'] || null;
     tree.photoUrl = employee['photoUrl'] || null;
     tree.supervisor = employee['supervisor'] || null;
-    tree.location = employee['location'] || 'NA';
+    tree.allocations = employee['allocations'];
+    // tree.skills = employee['skills'];
+    tree.pronunciation = employee['pronunciation'] || null;
+    tree.branch = employee['branch'] || null;
     tree.employeeStatus = 'default';
     tree.PTOStart = null;
     tree.PTOEnd = null;
+    tree.hireDate = employee['hireDate'] || null;
+    tree.supervisorId = employee['supervisorId'] || null;
+    tree.supervisorEmail = employee['supervisorEmail'] || null;
+    tree.email = workEmailAsLowerCase;
+    tree.allocations = [];
 
     if (!tree.preferredName || tree.preferredName === tree.lastName) {
       tree.displayName = tree.name;
@@ -125,13 +178,41 @@ export class BambooService {
       tree.displayName = `${tree.preferredName} ${tree.lastName}`;
     }
 
-    // tree.branch = employee['branch'];
-    // tree.supervisorId = employee['supervisorEId'];
-    // tree.allocations = employee['allocations'];
+    const retVal = {
+      id: employee['id'],
+      name: employee['displayName'],
+      firstName: employee['firstName'],
+      lastName: employee['lastName'],
+      preferredName: employee['preferredName'] || null,
+      displayName: tree.displayName,
+      department: employee['department'] || null,
+      jobTitle: employee['jobTitle'] || null,
+      location: employee['location'] || 'NA',
+      pronouns: employee['pronouns'] || null,
+      photoUrl: employee['photoUrl'] || null,
+      supervisor: employee['supervisor'] || null,
+      allocations: tree.allocations,
+      skills: [],
+      pronunciation: employee['pronunciation'] || null,
+      branch: employee['branch'] || null,
+      employeeStatus: 'default',
+      PTOStart: null,
+      PTOEnd: null,
+      hireDate: employee['hireDate'] || null,
+      supervisorId: employee['supervisorId'] || null,
+      supervisorEmail: employee['supervisorEmail'] || null,
+      email: workEmailAsLowerCase,
+      state: employee['state'] || null,
+      city: employee['city'] || null,
+      newHireMentor: employee['newHireMentor'] || null,
+      longTermMentor: employee['longTermMentor'] || null,
+      slackId: employee['slackId'] || null,
+    };
+
     // tree.skills = employee['skills'];
     // tree.employeeStatus = employee['employeeStatus'];
     // tree.pronunciation = employee['pronunciation'];
 
-    return tree;
+    return retVal;
   }
 }

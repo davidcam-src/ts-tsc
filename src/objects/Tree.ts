@@ -13,21 +13,24 @@ export class Tree {
   public department: string;
   public location: string;
   public branch: string;
-  public supervisorId: string;
+  public supervisorId: string | null = null;
   public supervisor: any;
   public photoUrl: string;
   public allocations: any;
-  public skills: string[];
   public employeeStatus: string;
   public pronouns: string | null;
   public pronunciation: string | null;
   public hireDate: string | null;
   public supervisorEmail: string | null;
+  public newHireMentor: string | null;
+  public longTermMentor: string | null;
+  public slackId: string | null;
   public state: string | null;
   public city: string | null;
   public email: string | null;
   public PTOStart: any;
   public PTOEnd: any;
+  public skills: any[] | null;
 }
 
 // export interface Allocation {
