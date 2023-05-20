@@ -1,6 +1,6 @@
 import * as data from './data.json';
 
-export const people: Tree[] = data.employees;
+export const people: object[] = data.employees;
 
 export class Tree {
   public id: string;
@@ -14,6 +14,7 @@ export class Tree {
   public location: string;
   public branch: string;
   public supervisorId: string | null = null;
+  public supervisorEId: string | null = null;
   public supervisor: any;
   public photoUrl: string;
   public allocations: any;

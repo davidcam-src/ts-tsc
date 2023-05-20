@@ -21,4 +21,13 @@ export class TreeList {
     );
     // console.log({ EMAILTOTREEMAP: this.emailToTreeMap });
   }
+
+  public async addBambooCustomReport(bambooService: BambooService) {
+    const bambooCustomReport = await bambooService.getBambooCustomReport();
+    this.emailToTreeMap = new Map<string, Object>();
+    bambooService.addBambooCustomReport(
+      bambooCustomReport as object[],
+      this.emailToTreeMap as object,
+    );
+  }
 }

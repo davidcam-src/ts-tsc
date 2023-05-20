@@ -104,21 +104,23 @@ describe('TreeList', () => {
   // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
   // });
 
-  // test('should add custom Bamboo list', () => {
-  //   let treeList = new TreeList(undefined, undefined);
-  //   let bambooService = new BambooService('123');
-  //       jest
-  //     .spyOn(axios, 'post')
-  //     .mockReturnValueOnce(mockBambooDirectory['employees']);
+  test('should add custom Bamboo list', async () => {
+    let treeList = new TreeList(undefined, undefined);
+    let bambooService = new BambooService('123');
+    jest
+      .spyOn(axios, 'post')
+      .mockResolvedValueOnce({ data: mockBambooCustomReport });
 
-  //   await treeList.(bambooService);
+    jest
+      .spyOn(bambooService, 'getBambooDirectory')
+      .mockReturnValueOnce(mockBambooDirectory['employees']);
 
-  //   var mockedEmailToTree = mockListWithCustomBambooReport;
+    await treeList.addBambooEmployeeList(bambooService);
 
-  //   expect(JSON.stringify(mockedEmailToTree)).toEqual(
-  //     JSON.stringify(mockListWithCustomBambooReport),
-  //   );
-  // });
+    treeList.addBambooCustomReport(bambooService);
+
+    expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
+  });
 
   // test('add PTO list', () => {
   //         var mockedEmailToTree = mockBambooPtoList

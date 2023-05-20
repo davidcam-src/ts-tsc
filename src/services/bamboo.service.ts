@@ -31,40 +31,46 @@ export class BambooService {
       },
     );
 
-    const customReportList: any[] = response.data.employees;
+    console.log(JSON.stringify(response));
+
+    const customReportList: any[] = response.data['employees'];
     return customReportList;
   }
 
-  public addBambooCustomReport(employeesFromBambooDirectory: object[]) {
-    const emailToTreeMap = new Map<string, Object>();
+  public addBambooCustomReport(
+    employeesFromCustomReport: object[],
+    existingEmailToTreeList: object,
+  ) {
+    const emailToTreeMap = existingEmailToTreeList as Map<string, Object>;
 
-    employeesFromBambooDirectory.forEach((employee) => {
+    employeesFromCustomReport.forEach((employee) => {
       const workEmail = employee['workEmail'];
       if (workEmail) {
-        if (emailToTreeMap.has(workEmail)) {
-          console.log('Multiple trees in bamboo with the same email.');
-        }
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
-        // console.log({
-        //   workEmailAsLowerCase: workEmailAsLowerCase,
-        //   treeObject: this.bambooObjectToTree(employee, workEmailAsLowerCase),
-        // });
-        emailToTreeMap.set(
-          workEmailAsLowerCase,
-          this.bambooObjectToTree(employee, workEmailAsLowerCase) as Object,
-        );
-        // console.log('HERE:', {
-        //   workEmailAsLowerCase: workEmailAsLowerCase,
-        //   tree: this.bambooObjectToTree(employee, workEmailAsLowerCase),
-        // });
+
+        if (emailToTreeMap.has(workEmailAsLowerCase)) {
+          console.log('Multiple trees in bamboo with the same email.');
+
+          let existingTree = emailToTreeMap.get(workEmailAsLowerCase);
+
+          existingTree['supervisorId'] = employee['supervisorEId'];
+          existingTree['supervisorEmail'] = employee['supervisorEmail'];
+          existingTree['city'] = employee['city'];
+          existingTree['state'] = employee['state'];
+          existingTree['pronunciation'] =
+            employee['customNamePronunciation(PhoneticSpelling)'];
+          existingTree['hireDate'] = employee['hireDate'];
+          existingTree['pronouns'] = employee['customPronoun'];
+          existingTree['newHireMentor'] = employee['customNewHireMentor'];
+          existingTree['longTermMentor'] = employee['customLongTermMentor'];
+          existingTree['state'] =
+            existingTree['state'] == ''
+              ? (existingTree['state'] = null)
+              : undefined;
+        }
       }
     });
 
-    //Drafting: add emailToTreeMap to the TreeList Object
-    // console.log(
-    //   'Email To Tree Logging HERE:',
-    //   JSON.stringify(emailToTreeMap, null, 2),
-    // );
     return emailToTreeMap;
   }
 
