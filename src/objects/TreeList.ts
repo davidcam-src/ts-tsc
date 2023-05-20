@@ -22,25 +22,10 @@ export class TreeList {
       if (workEmail) {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
 
-        if (existingEmailToTreeList['workEmailAsLowerCase']) {
+        if (existingEmailToTreeList[workEmailAsLowerCase]) {
           console.log('Multiple trees in bamboo with the same email.');
-
-          let existingTree = existingEmailToTreeList.get(workEmailAsLowerCase);
-
-          existingTree['supervisorId'] = employee['supervisorEId'];
-          existingTree['supervisorEmail'] = employee['supervisorEmail'];
-          existingTree['city'] = employee['city'];
-          existingTree['state'] = employee['state'];
-          existingTree['pronunciation'] =
-            employee['customNamePronunciation(PhoneticSpelling)'];
-          existingTree['hireDate'] = employee['hireDate'];
-          existingTree['pronouns'] = employee['customPronoun'];
-          existingTree['newHireMentor'] = employee['customNewHireMentor'];
-          existingTree['longTermMentor'] = employee['customLongTermMentor'];
-          existingTree['state'] =
-            existingTree['state'] == ''
-              ? (existingTree['state'] = null)
-              : undefined;
+          let existingTree = existingEmailToTreeList[workEmailAsLowerCase];
+          this.mapBambooCustomReportAttributes(existingTree, employee);
         }
       }
     });
@@ -75,6 +60,21 @@ export class TreeList {
       }
     });
     return emailToTreeMap;
+  }
+
+  public mapBambooCustomReportAttributes(existingTree: any, employee: any) {
+    existingTree['supervisorId'] = employee['supervisorEId'];
+    existingTree['supervisorEmail'] = employee['supervisorEmail'];
+    existingTree['city'] = employee['city'];
+    existingTree['state'] = employee['state'];
+    existingTree['pronunciation'] =
+      employee['customNamePronunciation(PhoneticSpelling)'];
+    existingTree['hireDate'] = employee['hireDate'];
+    existingTree['pronouns'] = employee['customPronoun'];
+    existingTree['newHireMentor'] = employee['customNewHireMentor'];
+    existingTree['longTermMentor'] = employee['customLongTermMentor'];
+    existingTree['state'] =
+      existingTree['state'] == '' ? (existingTree['state'] = null) : undefined;
   }
 
   public bambooObjectToTree(
