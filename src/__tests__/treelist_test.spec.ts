@@ -123,11 +123,22 @@ describe('TreeList', () => {
     expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
   });
 
-  // test('add PTO list', () => {
-  //         var mockedEmailToTree = mockBambooPtoList
+  test('add PTO list', async () => {
+    let treeList = new TreeList();
+    let bambooService = new BambooService('123');
+    jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockBambooPtoList });
 
-  // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockBambooPtoList));
-  // });
+    jest
+      .spyOn(bambooService, 'getBambooDirectory')
+      .mockReturnValueOnce(mockBambooDirectory['employees']);
+
+    await treeList.addBambooEmployeeList(bambooService);
+
+    await treeList.addBambooPtoList(bambooService);
+    treeList.updateTreesArray();
+
+    expect(treeList.emailToTreeMap).toMatchObject(mockListWithPto);
+  });
 
   // test('set supervisor to display name', () => {
 

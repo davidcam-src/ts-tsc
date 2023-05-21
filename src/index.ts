@@ -37,9 +37,9 @@ async function startServer() {
   app.get('/testBamboo', async (req, res) => {
     // console.log(await bambooService.CustomReport());
     // console.log(await bambooService.getBambooDirectory());
-    bambooService.generateEmailToTreeMap(
-      (await bambooService.getBambooDirectory()) as object[],
-    );
+    // bambooService.generateEmailToTreeMap(
+    //   (await bambooService.getBambooDirectory()) as object[],
+    // );
     res.send('1.0.0');
   });
 

@@ -43,7 +43,7 @@ export class BambooService {
         headers: { Accept: 'application/json' },
       },
     );
-    const whosOutList: any[] = response.data.employees;
+    const whosOutList: any[] = response.data;
     return whosOutList;
   }
 

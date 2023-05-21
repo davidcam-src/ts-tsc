@@ -19,6 +19,7 @@ export class TreeList {
 
     employeesFromCustomReport.forEach((employee) => {
       const workEmail = employee['workEmail'];
+
       if (workEmail) {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
 
@@ -35,9 +36,23 @@ export class TreeList {
     const bambooWhosOutList =
       (await bambooService.getBambooWhosOutList()) as object[];
     bambooWhosOutList.forEach((employee) => {
-      let treeOnPTO = employee['employeeId'];
-      // Checkpoint: Writing from python file in progress
+      let treeOnPTOId = employee['employeeId'];
+      const existingTree = Object.values(this.emailToTreeMap).find(
+        (emp) => emp['id'] === treeOnPTOId.toString(),
+      );
+
+      if (existingTree) {
+        existingTree['employeeStatus'] = 'leave';
+        existingTree['PTOStart'] = employee['start'];
+        existingTree['PTOEnd'] = employee['end'];
+        this.emailToTreeMap[existingTree['workEmail']] = existingTree;
+      }
     });
+  }
+
+  //Reminder: Call this after addBambooPtoList
+  public updateTreesArray() {
+    this.trees = Object.values(this.emailToTreeMap);
   }
 
   public generateEmailToTreeMap(
