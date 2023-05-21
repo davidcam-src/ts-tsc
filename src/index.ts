@@ -4,11 +4,12 @@ import { people } from './objects/Tree';
 import cors from 'cors';
 import { BambooService } from './services/bamboo.service';
 import { getBambooApiKey } from './services/ssm.service';
+import { TreeList } from './objects/TreeList';
 
 async function startServer() {
   const app = express();
-  const bambooAiKey = await getBambooApiKey();
-  const bambooService = new BambooService(bambooAiKey);
+  const bambooApiKey = await getBambooApiKey();
+  const bambooService = new BambooService(bambooApiKey);
 
   // Don't forget to uncomment:
   // app.use(requireAuth);
@@ -27,7 +28,16 @@ async function startServer() {
 
   //Using the requireAuth middleware, we can protect our routes from unauthorized access.
   app.get('/trees', async (req, res) => {
-    res.send({ employees: people });
+    let treeList = new TreeList();
+    await treeList.addBambooEmployeeList(bambooService);
+    await treeList.addBambooCustomReport(bambooService);
+    await treeList.addBambooPtoList(bambooService);
+    treeList.updateTreesArray();
+    // res.send(treeList.emailToTreeMap);
+    res.send(treeList.treeListToJSON());
+
+    // Removing static data response
+    // res.send({ employees: people });
   });
 
   app.get('/version', async (req, res) => {

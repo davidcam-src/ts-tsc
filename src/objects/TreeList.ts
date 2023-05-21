@@ -5,6 +5,7 @@ export class TreeList {
   public trees: Tree[] | undefined;
   public emailToTreeMap: any = new Map<string, Object>();
 
+  //Working
   public async addBambooEmployeeList(bambooService: BambooService) {
     const bambooDirectory = await bambooService.getBambooDirectory();
     this.emailToTreeMap = Object.fromEntries(
@@ -24,7 +25,7 @@ export class TreeList {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
 
         if (existingEmailToTreeList[workEmailAsLowerCase]) {
-          console.log('Multiple trees in bamboo with the same email.');
+          // console.log('Multiple trees in bamboo with the same email.');
           let existingTree = existingEmailToTreeList[workEmailAsLowerCase];
           this.mapBambooCustomReportAttributes(existingTree, employee);
         }
@@ -50,9 +51,19 @@ export class TreeList {
     });
   }
 
-  //Reminder: Call this after addBambooPtoList
-  public updateTreesArray() {
-    this.trees = Object.values(this.emailToTreeMap);
+  public treeListToJSON() {
+    this.trees = this.trees.filter(
+      (tree) =>
+        tree.id !== null &&
+        tree.department !== 'Test / Bots' &&
+        tree.name !== 'Lattice Bot',
+    );
+
+    const sortedTrees = this.trees.sort((a, b) =>
+      a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase()),
+    );
+    const result = JSON.stringify({ employees: sortedTrees }, null, 4);
+    return result;
   }
 
   public generateEmailToTreeMap(
@@ -66,7 +77,7 @@ export class TreeList {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
 
         if (emailToTreeMap.has(workEmailAsLowerCase)) {
-          console.log('Multiple trees in bamboo with the same email.');
+          // console.log('Multiple trees in bamboo with the same email.');
         }
         emailToTreeMap.set(
           workEmailAsLowerCase,
@@ -75,6 +86,11 @@ export class TreeList {
       }
     });
     return emailToTreeMap;
+  }
+
+  //Reminder: Call this after addBambooPtoList
+  public updateTreesArray() {
+    this.trees = Object.values(this.emailToTreeMap);
   }
 
   public mapBambooCustomReportAttributes(existingTree: any, employee: any) {
