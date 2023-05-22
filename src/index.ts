@@ -12,7 +12,6 @@ async function startServer() {
   const bambooService = new BambooService(bambooApiKey);
 
   // Don't forget to uncomment:
-  app.use(requireAuth);
   app.use(
     cors({
       origin: '*',
@@ -25,6 +24,20 @@ async function startServer() {
       ],
     }),
   );
+
+  const allowOptionsRequests = (req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      // Allow OPTIONS request to proceed
+      res.sendStatus(200);
+    } else {
+      // For other requests, continue to the next middleware
+      next();
+    }
+  };
+
+  // Apply the middleware globally
+  app.use(allowOptionsRequests);
+  app.use(requireAuth);
 
   //Using the requireAuth middleware, we can protect our routes from unauthorized access.
   app.get('/trees', async (req, res) => {
