@@ -77,7 +77,7 @@ jobs:
       - name: New Container on EC2 instance
         run: |
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-3-90-148-177.compute-1.amazonaws.com '
+          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@3.90.148.177 '
               # Now we have got the access of EC2 and we will start the deploy .
               aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
               docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
