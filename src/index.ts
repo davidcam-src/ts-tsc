@@ -12,7 +12,7 @@ async function startServer() {
   const bambooService = new BambooService(bambooApiKey);
 
   // Don't forget to uncomment:
-  // app.use(requireAuth);
+  app.use(requireAuth);
   app.use(
     cors({
       origin: '*',
