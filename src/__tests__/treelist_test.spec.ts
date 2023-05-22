@@ -77,18 +77,13 @@ describe('TreeList', () => {
   // });
 
   test('should add Bamboo employee list', async () => {
-    // let treeList = new TreeList(undefined, undefined);
     let treeList = new TreeList();
     let bambooService = new BambooService('123');
     jest
-      .spyOn(bambooService, 'getBambooDirectory')
-      .mockReturnValueOnce(mockBambooDirectory['employees']);
+      .spyOn(axios, 'get')
+      .mockResolvedValueOnce({ data: mockBambooDirectory });
 
     await treeList.addBambooEmployeeList(bambooService);
-    // console.log('WWWWW', JSON.stringify(mockListBambooEmployees));
-
-    // console.log(typeof treeList.emailToTreeMap);
-    // console.log(typeof mockListBambooEmployees);
 
     expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
   });
@@ -109,12 +104,11 @@ describe('TreeList', () => {
     let treeList = new TreeList();
     let bambooService = new BambooService('123');
     jest
+      .spyOn(axios, 'get')
+      .mockResolvedValueOnce({ data: mockBambooDirectory });
+    jest
       .spyOn(axios, 'post')
       .mockResolvedValueOnce({ data: mockBambooCustomReport });
-
-    jest
-      .spyOn(bambooService, 'getBambooDirectory')
-      .mockReturnValueOnce(mockBambooDirectory['employees']);
 
     await treeList.addBambooEmployeeList(bambooService);
 
@@ -126,16 +120,14 @@ describe('TreeList', () => {
   test('add PTO list', async () => {
     let treeList = new TreeList();
     let bambooService = new BambooService('123');
-    jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockBambooPtoList });
-
     jest
-      .spyOn(bambooService, 'getBambooDirectory')
-      .mockReturnValueOnce(mockBambooDirectory['employees']);
+      .spyOn(axios, 'get')
+      .mockResolvedValueOnce({ data: mockBambooDirectory });
+    jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockBambooPtoList });
 
     await treeList.addBambooEmployeeList(bambooService);
 
     await treeList.addBambooPtoList(bambooService);
-    treeList.updateTreesArray();
 
     expect(treeList.emailToTreeMap).toMatchObject(mockListWithPto);
   });
