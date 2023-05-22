@@ -76,6 +76,9 @@ jobs:
 
       - name: New Container on EC2 instance
         run: |
+          export AWS_ACCESS_KEY_ID="ASIAVF4EN7OHEZRP7CPZ"
+          export AWS_SECRET_ACCESS_KEY="mWLq6gVd4BgG18TRIGMnTAx1/uY2GFogX/9fOu3a"
+          export AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEI///////////wEaCXVzLWVhc3QtMSJHMEUCIQDwdj3kMj7B0pdWSXIg2+JeV2IzOE2zr9egKbUsxkJnqQIgPXD364CO6gPqCA12TIVOe0Vv5omRjnnNZRDB9bPCNgYqtQMIt///////////ARAAGgwzNTYyMjMxNTUwODYiDFeXvYd6jmtT9op8qCqJA0cuwXb5a8SShmvgl18SevFyRnS3o4XO9YNKoC3MH5gUrgYVNH5ut+JBC9YXlidP7XYHmzuWbZIT2jbQ8T5EzGcjJRcwIiXxHMkiXYIwFa3OBqUTDgYaT2xK3RrQXveO4hzawv0NsRGkW7F2jSHMt1JR/tyJjn7BGFR0M67cxtvVRaKfMHv2Wn5X/YPYzSg9WW976vxh27hUUovgsu7Fani9NVvIw/6GS+87g6jO2IR85wC+U10zckbVEVJbhBc6hj4UqPqv1fjuB3AB4UEV4KTFfuPFmbmP9A901YtTavklOd4/nk4QNFSCCM+FMOAkhrNp7y9jsduzARlSrtABgsSRUn2YGZqBbHjWIPSLaJy0NehI9oEvqnWaB6cJpXufJZwCDC7xuitBvsva6AL5pXL6p0ztkDQbMuW44zW2Ff5hwuvdxjei309kaZ1QJMR2KrzVpF0AfHkd/HiG8AuxqRlEV1GIrKr1FlmbfbEUF9WBGrEjxv+uLWN5j3VxdtOcBPw6XhdNKTyx4jC3jKyjBjqmAfHE3RqfCvUutbuFXsCek4Cx8xBBEWHh3KAGafMI9PpMzrGiKKl0XD8iAn5lAi31Z5JD3RTg49ZSdsejfVZNiPwELVrQhGqOXdEqEXi1yRYFIX20kI7TQcZaiuimHc8YJ05ogTTlSgEMCWmW2/5DqUfFnj4BPGv2mBJpXShfbtLoarv3HieENlyi8sZN56uPiv06VrqX4BySwf9sUz/2jp5Dn1vqmCQ="
           echo "${{ env.SSH_KEY }}" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@54.92.188.135 '
               # Now we have got the access of EC2 and we will start the deploy .
