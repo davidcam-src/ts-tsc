@@ -11,7 +11,9 @@ const requireAuth = async (req: any, res: any, next: any) => {
   }
 
   // Important to do testing on the next two lines: Bear vs Bearer
-  const bearerToken = req.headers.authorization.substring(7);
+  const bearerToken = req.headers.authorization
+    .substring(7)
+    .replace(/\s+/g, '');
   console.log('Bearer Token:', bearerToken);
 
   // If there is no token, return 401

@@ -3,11 +3,12 @@ import { Tree } from './Tree';
 
 export class TreeList {
   public trees: Tree[] | undefined;
-  public emailToTreeMap: any = new Map<string, Object>();
+  public emailToTreeMap: any;
 
-  //Working
   public async addBambooEmployeeList(bambooService: BambooService) {
     const bambooDirectory = await bambooService.getBambooDirectory();
+    //Uses the bambooDirectory to generate a map of email addresses to tree objects
+    //Object.fromEntries() is used to convert the Map into an object since maps are serialized differently
     this.emailToTreeMap = Object.fromEntries(
       this.generateEmailToTreeMap(bambooDirectory as object[]),
     );
@@ -52,16 +53,19 @@ export class TreeList {
   }
 
   public treeListToJSON() {
+    // Removing trees with null ids, trees with the department 'Test / Bots', and the name 'Lattice Bot'
     this.trees = this.trees.filter(
       (tree) =>
         tree.id !== null &&
         tree.department !== 'Test / Bots' &&
         tree.name !== 'Lattice Bot',
     );
-
+    // Sorting the trees by lower case conversions of display name
+    // localeCompare used to compare strings
     const sortedTrees = this.trees.sort((a, b) =>
       a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase()),
     );
+    // sortedTrees is the employee array in our response
     const result = JSON.stringify({ employees: sortedTrees }, null, 4);
     return result;
   }
@@ -70,15 +74,14 @@ export class TreeList {
     employeesFromBambooDirectory: object[],
   ): Map<string, Object> {
     const emailToTreeMap = new Map<string, Object>();
-
+    // Loops through employees from bamboo directory and adds them to the emailToTreeMap
     employeesFromBambooDirectory.forEach((employee) => {
+      // Getting the email of the employee, and converting it to lowercase after a null check
       const workEmail = employee['workEmail'];
       if (workEmail) {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
-
-        if (emailToTreeMap.has(workEmailAsLowerCase)) {
-          // console.log('Multiple trees in bamboo with the same email.');
-        }
+        // Adding the employee to the map as a tree with the email as the key
+        // bambooObjectToTree converts the employee data to a tree object
         emailToTreeMap.set(
           workEmailAsLowerCase,
           this.bambooObjectToTree(employee, workEmailAsLowerCase) as Object,
@@ -114,8 +117,10 @@ export class TreeList {
     employee: object,
     workEmailAsLowerCase: string,
   ): Object {
+    //Instantiates new tree object
     const tree = new Tree();
 
+    //Mapping fields within BambooAPI response to tree object fields
     tree.id = employee['id'];
     tree.name = employee['displayName'];
     tree.firstName = employee['firstName'];
@@ -142,11 +147,14 @@ export class TreeList {
     tree.allocations = [];
 
     if (!tree.preferredName || tree.preferredName === tree.lastName) {
+      //Defaults to Bamboo name if preferred name does not exist or is last name
       tree.displayName = tree.name;
     } else {
+      //Display name is preferred name + last name if preferred name exists
       tree.displayName = `${tree.preferredName} ${tree.lastName}`;
     }
 
+    //Changed to object because of serialization issues
     const retVal = {
       id: employee['id'],
       name: employee['displayName'],
