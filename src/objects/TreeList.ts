@@ -105,7 +105,9 @@ export class TreeList {
     existingTree['newHireMentor'] = employee['customNewHireMentor'];
     existingTree['longTermMentor'] = employee['customLongTermMentor'];
     existingTree['state'] =
-      existingTree['state'] == '' ? (existingTree['state'] = null) : undefined;
+      existingTree['state'] == ''
+        ? (existingTree['state'] = null)
+        : employee['state'];
   }
 
   public bambooObjectToTree(

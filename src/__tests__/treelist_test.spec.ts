@@ -68,24 +68,109 @@ const mockListWithSupervisorDisplayName = JSON.parse(
 );
 
 describe('TreeList', () => {
-  // beforeEach(() => {
-  // });
-
-  // test('should output the correct employee list', () => {
-  //                 var treeListJson = expectedOutput;
-  // expect(treeListJson).toEqual(expectedOutput);
-  // });
+  //Bamboo Test Stucture:
+  //1. Instantiate TreeList and BambooService
+  //2. Mock responses from the BambooAPI within the BambooService, which is called by the TreeList
+  //3. Spy on the BambooService methods that are called by the TreeList, to make sure they're called
+  //4. Call the TreeList methods that call the BambooService methods
+  //5. Assert that the BambooService methods were called
+  //6. Assert that the TreeList has the correct data
 
   test('should add Bamboo employee list', async () => {
+    //Step 1:
     let treeList = new TreeList();
     let bambooService = new BambooService('123');
+
+    //Step 2:
     jest
       .spyOn(axios, 'get')
       .mockResolvedValueOnce({ data: mockBambooDirectory });
 
+    //Step 3:
+    const getBambooDirectorySpy = jest.spyOn(
+      bambooService,
+      'getBambooDirectory',
+    );
+
+    //Step 4:
     await treeList.addBambooEmployeeList(bambooService);
 
+    //Step 5:
+    expect(getBambooDirectorySpy).toHaveBeenCalledTimes(1);
+
+    //Step 6:
     expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
+  });
+
+  test('should add custom Bamboo list', async () => {
+    //Step 1:
+    let treeList = new TreeList();
+    let bambooService = new BambooService('123');
+
+    //Step 2:
+    jest
+      .spyOn(axios, 'get')
+      .mockResolvedValueOnce({ data: mockBambooDirectory });
+    jest
+      .spyOn(axios, 'post')
+      .mockResolvedValueOnce({ data: mockBambooCustomReport });
+
+    //Step 3:
+    const getCustomReportSpy = jest.spyOn(
+      bambooService,
+      'getBambooCustomReport',
+    );
+
+    const getBambooDirectorySpy = jest.spyOn(
+      bambooService,
+      'getBambooDirectory',
+    );
+
+    //Step 4:
+    await treeList.addBambooEmployeeList(bambooService);
+    await treeList.addBambooCustomReport(bambooService);
+
+    //Step 5:
+    expect(getBambooDirectorySpy).toHaveBeenCalledTimes(1);
+    expect(getCustomReportSpy).toHaveBeenCalledTimes(1);
+
+    //Step 6:
+    expect(treeList.emailToTreeMap).toMatchObject(
+      mockListWithCustomBambooReport,
+    );
+  });
+
+  test('add PTO list', async () => {
+    //Step 1:
+    let treeList = new TreeList();
+    let bambooService = new BambooService('123');
+
+    //Step 2:
+    jest
+      .spyOn(axios, 'get')
+      .mockResolvedValueOnce({ data: mockBambooDirectory });
+    jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockBambooPtoList });
+
+    //Step 3:
+    const getBambooWhosOutListSpy = jest.spyOn(
+      bambooService,
+      'getBambooWhosOutList',
+    );
+    const getBambooDirectorySpy = jest.spyOn(
+      bambooService,
+      'getBambooDirectory',
+    );
+
+    //Step 4:
+    await treeList.addBambooEmployeeList(bambooService);
+    await treeList.addBambooPtoList(bambooService);
+
+    //Step 5:
+    expect(getBambooWhosOutListSpy).toHaveBeenCalledTimes(1);
+    expect(getBambooDirectorySpy).toHaveBeenCalledTimes(1);
+
+    //Step 6:
+    expect(treeList.emailToTreeMap).toMatchObject(mockListWithPto);
   });
 
   // test('should add Datalake employee list', () => {
@@ -99,38 +184,6 @@ describe('TreeList', () => {
 
   // expect(JSON.stringify(mockedEmailToTree)).toEqual(JSON.stringify(mockListWithSkills));
   // });
-
-  test('should add custom Bamboo list', async () => {
-    let treeList = new TreeList();
-    let bambooService = new BambooService('123');
-    jest
-      .spyOn(axios, 'get')
-      .mockResolvedValueOnce({ data: mockBambooDirectory });
-    jest
-      .spyOn(axios, 'post')
-      .mockResolvedValueOnce({ data: mockBambooCustomReport });
-
-    await treeList.addBambooEmployeeList(bambooService);
-
-    treeList.addBambooCustomReport(bambooService);
-
-    expect(treeList.emailToTreeMap).toMatchObject(mockListBambooEmployees);
-  });
-
-  test('add PTO list', async () => {
-    let treeList = new TreeList();
-    let bambooService = new BambooService('123');
-    jest
-      .spyOn(axios, 'get')
-      .mockResolvedValueOnce({ data: mockBambooDirectory });
-    jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockBambooPtoList });
-
-    await treeList.addBambooEmployeeList(bambooService);
-
-    await treeList.addBambooPtoList(bambooService);
-
-    expect(treeList.emailToTreeMap).toMatchObject(mockListWithPto);
-  });
 
   // test('set supervisor to display name', () => {
 
