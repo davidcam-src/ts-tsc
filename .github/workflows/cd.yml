@@ -62,17 +62,17 @@ jobs:
 #           push: true
 #           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
 
-#       - name: Get Actions Runner IP Address
-#         id: ip
-#         uses: haythem/public-ip@v1.2
+      - name: Get Actions Runner IP Address
+        id: ip
+        uses: haythem/public-ip@v1.2
         
-#       - name: Whitelist Actions Runner IP Address
-#         run: |
-#           aws ec2 authorize-security-group-ingress \
-#             --group-id $AWS_INSTANCE_SG_ID \
-#             --protocol tcp \
-#             --port 22 \
-#             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Whitelist Actions Runner IP Address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
       - name: New Container on EC2 instance
         run: |
