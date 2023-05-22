@@ -46,13 +46,13 @@ jobs:
           aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
         
-      - name: Login to ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
-          aws-region:  ${{ env.AWS_REGION }}
+#       - name: Login to ECR
+#         id: login-ecr
+#         uses: aws-actions/amazon-ecr-login@v1
+#         with:
+#           aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+#           aws-region:  ${{ env.AWS_REGION }}
 
 #       - name: Build and push Docker image
 #         id: build-image
@@ -62,17 +62,17 @@ jobs:
 #           push: true
 #           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.ECR_IMAGE_TAG }}
 
-      - name: Get Actions Runner IP Address
-        id: ip
-        uses: haythem/public-ip@v1.2
+#       - name: Get Actions Runner IP Address
+#         id: ip
+#         uses: haythem/public-ip@v1.2
         
-      - name: Whitelist Actions Runner IP Address
-        run: |
-          aws ec2 authorize-security-group-ingress \
-            --group-id $AWS_INSTANCE_SG_ID \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#       - name: Whitelist Actions Runner IP Address
+#         run: |
+#           aws ec2 authorize-security-group-ingress \
+#             --group-id $AWS_INSTANCE_SG_ID \
+#             --protocol tcp \
+#             --port 22 \
+#             --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
       - name: New Container on EC2 instance
         run: |
