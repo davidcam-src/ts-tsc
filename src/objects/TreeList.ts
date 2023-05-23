@@ -5,6 +5,7 @@ export class TreeList {
   public trees: Tree[] | undefined;
   public emailToTreeMap: any;
 
+  //Updates the emailToTreeMap with the latest information from Bamboo
   public async addBambooEmployeeList(bambooService: BambooService) {
     const bambooDirectory = await bambooService.getBambooDirectory();
     //Uses the bambooDirectory to generate a map of email addresses to tree objects
@@ -14,17 +15,21 @@ export class TreeList {
     );
   }
 
+  //Adds the attributes from the bamboo custom report to entries in the emailToTreeMap
   public async addBambooCustomReport(bambooService: BambooService) {
+    //Converting raw object to array of objects to iterate through
     const employeesFromCustomReport =
       (await bambooService.getBambooCustomReport()) as object[];
+    //Getting the map of email addresses to tree objects
     const existingEmailToTreeList = this.emailToTreeMap;
 
+    //Iterating through the employees from the custom report
     employeesFromCustomReport.forEach((employee) => {
+      // Getting the email of the employee, and converting it to lowercase after a null check
       const workEmail = employee['workEmail'];
-
       if (workEmail) {
         const workEmailAsLowerCase = (workEmail as string).toLowerCase();
-
+        // Checking if the email from the custom report is in the map of emails to trees, and if so, adding the custom report attributes to the tree
         if (existingEmailToTreeList[workEmailAsLowerCase]) {
           // console.log('Multiple trees in bamboo with the same email.');
           let existingTree = existingEmailToTreeList[workEmailAsLowerCase];
@@ -37,16 +42,24 @@ export class TreeList {
   public async addBambooPtoList(bambooService: BambooService) {
     const bambooWhosOutList =
       (await bambooService.getBambooWhosOutList()) as object[];
+    //Iterating through the employees from the PTO list
     bambooWhosOutList.forEach((employee) => {
+      //Retrieving the ID of the employee on PTO to find someone in the existing emailToTreeMap with the same ID
       let treeOnPTOId = employee['employeeId'];
       const existingTree = Object.values(this.emailToTreeMap).find(
         (emp) => emp['id'] === treeOnPTOId.toString(),
       );
 
+      //If the employee is in the emailToTreeMap, then we update the employeeStatus, PTOStart, and PTOEnd attributes
       if (existingTree) {
         existingTree['employeeStatus'] = 'leave';
         existingTree['PTOStart'] = employee['start'];
         existingTree['PTOEnd'] = employee['end'];
+
+        //Bug for Demo #3
+        // existingTree['employeeStatus'] = 'fakeLeave';
+        // existingTree['PTOStart'] = 'fakeStart';
+        // existingTree['PTOEnd'] = 'fakeEnd';
         this.emailToTreeMap[existingTree['workEmail']] = existingTree;
       }
     });
@@ -97,6 +110,11 @@ export class TreeList {
   }
 
   public mapBambooCustomReportAttributes(existingTree: any, employee: any) {
+    //Bug for Demo #2
+    // existingTree['supervisorId'] = 'fakeSupervisorId';
+    // existingTree['supervisorEmail'] = 'fakeSupervisorEmail';
+    // existingTree['city'] = 'fakeCity';
+
     existingTree['supervisorId'] = employee['supervisorEId'];
     existingTree['supervisorEmail'] = employee['supervisorEmail'];
     existingTree['city'] = employee['city'];
@@ -121,6 +139,12 @@ export class TreeList {
     const tree = new Tree();
 
     //Mapping fields within BambooAPI response to tree object fields
+
+    //Bug for Demo #1
+    // tree.id = 'fakeId';
+    // tree.name = 'fakeName';
+    // tree.firstName = 'fakeFirstName';
+
     tree.id = employee['id'];
     tree.name = employee['displayName'];
     tree.firstName = employee['firstName'];
