@@ -5,17 +5,19 @@ export class TreeList {
   public trees: Tree[] | undefined;
   public emailToTreeMap: any;
 
+  //addBambooEmployeeList, addBambooCustomReport, addBambooProList and treeListToJSON most important
+
   //Updates the emailToTreeMap with the latest information from Bamboo
   public async addBambooEmployeeList(bambooService: BambooService) {
     const bambooDirectory = await bambooService.getBambooDirectory();
-    //Uses the bambooDirectory to generate a map of email addresses to tree objects
-    //Object.fromEntries() is used to convert the Map into an object since maps are serialized differently
+    //Use the response we get back to generate a map of email addresses to tree objects
+    //Object.fromEntries() is used to convert the Map into an object since maps seem to be serialized differently from objects. Mostly to get around testing
     this.emailToTreeMap = Object.fromEntries(
       this.generateEmailToTreeMap(bambooDirectory as object[]),
     );
   }
 
-  //Adds the attributes from the bamboo custom report to entries in the emailToTreeMap
+  //Adds the attributes from the bamboo custom report to existing entries in the emailToTreeMap
   public async addBambooCustomReport(bambooService: BambooService) {
     //Converting raw object to array of objects to iterate through
     const employeesFromCustomReport =
@@ -39,6 +41,7 @@ export class TreeList {
     });
   }
 
+  //Adds the attributes from the bamboo PTO list to entries in the emailToTreeMap
   public async addBambooPtoList(bambooService: BambooService) {
     const bambooWhosOutList =
       (await bambooService.getBambooWhosOutList()) as object[];
