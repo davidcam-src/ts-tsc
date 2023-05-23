@@ -55,14 +55,14 @@ export class TreeList {
 
       //If the employee is in the emailToTreeMap, then we update the employeeStatus, PTOStart, and PTOEnd attributes
       if (existingTree) {
-        existingTree['employeeStatus'] = 'leave';
-        existingTree['PTOStart'] = employee['start'];
-        existingTree['PTOEnd'] = employee['end'];
-
         //Bug for Demo #3
         // existingTree['employeeStatus'] = 'fakeLeave';
         // existingTree['PTOStart'] = 'fakeStart';
         // existingTree['PTOEnd'] = 'fakeEnd';
+        //Replacing
+        existingTree['employeeStatus'] = 'leave';
+        existingTree['PTOStart'] = employee['start'];
+        existingTree['PTOEnd'] = employee['end'];
         this.emailToTreeMap[existingTree['workEmail']] = existingTree;
       }
     });
@@ -117,10 +117,11 @@ export class TreeList {
     // existingTree['supervisorId'] = 'fakeSupervisorId';
     // existingTree['supervisorEmail'] = 'fakeSupervisorEmail';
     // existingTree['city'] = 'fakeCity';
-
+    //Replacing
     existingTree['supervisorId'] = employee['supervisorEId'];
     existingTree['supervisorEmail'] = employee['supervisorEmail'];
     existingTree['city'] = employee['city'];
+
     existingTree['state'] = employee['state'];
     existingTree['pronunciation'] =
       employee['customNamePronunciation(PhoneticSpelling)'];
@@ -142,11 +143,6 @@ export class TreeList {
     const tree = new Tree();
 
     //Mapping fields within BambooAPI response to tree object fields
-
-    //Bug for Demo #1
-    // tree.id = 'fakeId';
-    // tree.name = 'fakeName';
-    // tree.firstName = 'fakeFirstName';
 
     tree.id = employee['id'];
     tree.name = employee['displayName'];
@@ -182,10 +178,16 @@ export class TreeList {
     }
 
     //Changed to object because of serialization issues
+
     const retVal = {
       id: employee['id'],
       name: employee['displayName'],
       firstName: employee['firstName'],
+
+      //Bug for Demo #1
+      // id: 'fakeId',
+      // name: 'fakeName',
+      // firstName: 'fakeFirstName',
       lastName: employee['lastName'],
       preferredName: employee['preferredName'] || null,
       displayName: tree.displayName,
@@ -195,7 +197,7 @@ export class TreeList {
       pronouns: employee['pronouns'] || null,
       photoUrl: employee['photoUrl'] || null,
       supervisor: employee['supervisor'] || null,
-      allocations: tree.allocations,
+      allocations: [],
       skills: [],
       pronunciation: employee['pronunciation'] || null,
       branch: employee['branch'] || null,
