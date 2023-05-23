@@ -2,13 +2,14 @@ import { BambooService } from '../services/bamboo.service';
 import { Tree } from './Tree';
 
 export class TreeList {
-  public trees: Tree[] | undefined;
+  public trees: Tree[] | undefined = [];
   public emailToTreeMap: any;
 
   //addBambooEmployeeList, addBambooCustomReport, addBambooProList and treeListToJSON most important
 
   //Updates the emailToTreeMap with the latest information from Bamboo
   public async addBambooEmployeeList(bambooService: BambooService) {
+    //Improvements: Modulate code, more testable
     const bambooDirectory = await bambooService.getBambooDirectory();
     //Use the response we get back to generate a map of email addresses to tree objects
     //Object.fromEntries() is used to convert the Map into an object since maps seem to be serialized differently from objects. Mostly to get around testing
@@ -60,6 +61,7 @@ export class TreeList {
         // existingTree['PTOStart'] = 'fakeStart';
         // existingTree['PTOEnd'] = 'fakeEnd';
         //Replacing
+        // Improvement: Mapping function
         existingTree['employeeStatus'] = 'leave';
         existingTree['PTOStart'] = employee['start'];
         existingTree['PTOEnd'] = employee['end'];
@@ -68,6 +70,11 @@ export class TreeList {
     });
   }
 
+  // Improvement: Service repository model, Emphasize learning
+  // Testing Steps: Init TreeList
+  // addBambooEmployeeList
+  // Can make the map manually sinceI'm not testing the other TL functionality
+  // Expect that the JSON contain trees where the id is there, the name is not Lattice Bot, and the department is not Test / Bots
   public treeListToJSON() {
     // Removing trees with null ids, trees with the department 'Test / Bots', and the name 'Lattice Bot'
     this.trees = this.trees.filter(

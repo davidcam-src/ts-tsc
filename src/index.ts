@@ -48,7 +48,6 @@ async function startServer() {
     treeList.updateTreesArray();
     // res.send(treeList.emailToTreeMap);
     res.send(treeList.treeListToJSON());
-
     // Removing static data response
     // res.send({ employees: people });
   });

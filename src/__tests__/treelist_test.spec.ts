@@ -76,6 +76,34 @@ describe('TreeList', () => {
   //5. Assert that the BambooService methods were called
   //6. Assert that the TreeList has the correct data
 
+  test(`treeListToJSON: Should filter out null ids, 'Test / Bots' department and 'Lattice Bot' and sort`, async () => {
+    let treeList = new TreeList();
+    treeList.emailToTreeMap = mockListWithCustomBambooReport;
+    treeList.updateTreesArray();
+
+    let employeesOnly: any[] = Object.values(mockListWithCustomBambooReport);
+    employeesOnly = employeesOnly.filter((employee) => {
+      return (
+        employee.id !== null &&
+        employee.department !== 'Test / Bots' &&
+        employee.displayName !== 'Lattice Bot'
+      );
+    });
+    employeesOnly.sort((a, b) => {
+      return a.displayName
+        .toLowerCase()
+        .localeCompare(b.displayName.toLowerCase());
+    });
+
+    let employeesOnlyJSON = JSON.stringify(
+      { employees: employeesOnly },
+      null,
+      4,
+    );
+
+    expect(treeList.treeListToJSON()).toEqual(employeesOnlyJSON);
+  });
+
   test('should add Bamboo employee list', async () => {
     //Step 1:
     let treeList = new TreeList();
