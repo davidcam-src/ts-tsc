@@ -12,12 +12,12 @@ export function getBambooApiKey(): Promise<string> {
     .then((data) => data.Parameter?.Value ?? '');
 }
 
-// function getDataLakeClientId(): Promise<string> {
-//   return ssm
-//     .getParameter({
-//       Name: '/treesearch/dev/datalake/CLIENT_ID',
-//       WithDecryption: true,
-//     })
-//     .promise()
-//     .then((data) => data.Parameter?.Value ?? '');
-// }
+export function getDataLakeClientId(): Promise<string> {
+  return ssm
+    .getParameter({
+      Name: '/treesearch/dev/datalake/CLIENT_ID',
+      WithDecryption: true,
+    })
+    .promise()
+    .then((data) => data.Parameter?.Value ?? '');
+}

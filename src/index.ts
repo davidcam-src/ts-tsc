@@ -1,14 +1,15 @@
 import express from 'express';
 import requireAuth from './middleware/authMiddleware';
-import { people } from './objects/Tree';
 import cors from 'cors';
 import { BambooService } from './services/bamboo.service';
-import { getBambooApiKey } from './services/ssm.service';
+import { getBambooApiKey, getDataLakeClientId } from './services/ssm.service';
 import { TreeList } from './objects/TreeList';
 
 async function startServer() {
   const app = express();
   const bambooApiKey = await getBambooApiKey();
+  const dataLakeClientId = await getDataLakeClientId();
+
   const bambooService = new BambooService(bambooApiKey);
 
   // Don't forget to uncomment:
